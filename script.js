@@ -1,5 +1,5 @@
 const planets = [
-  { id: "about", name: "About", mapLabel: "E D U A R D O", color: "#b9824b", size: 65, speed: 25, x: 50, y: 55 },
+  { id: "about", name: "About", mapLabel: "E D U A R D O", color: "#4a9eff", size: 82, speed: 25, x: 50, y: 55 },
   { id: "education", name: "Education", color: "#a9823b", size: 75, speed: 35, x: 61, y: 20 },
   { id: "projects", name: "Projects", color: "#357f76", size: 70, speed: 45, x: 84, y: 47 },
   { id: "community", name: "Community", color: "#496f49", size: 60, speed: 30, x: 34, y: 73 },
@@ -10,14 +10,14 @@ const planets = [
 ];
 
 const orbitDefinitions = {
-  about: { a: 280, b: 120, tilt: 15, start: 45, duration: 50 },
-  education: { a: 380, b: 180, tilt: -20, start: 120, duration: 65 },
-  projects: { a: 450, b: 200, tilt: 35, start: 200, duration: 80 },
-  community: { a: 320, b: 250, tilt: -35, start: 280, duration: 55 },
-  beyond: { a: 500, b: 160, tilt: 10, start: 320, duration: 90 },
-  probability: { a: 260, b: 220, tilt: 50, start: 160, duration: 45 },
-  gravity: { a: 420, b: 300, tilt: -15, start: 240, duration: 75 },
-  contact: { a: 350, b: 130, tilt: 25, start: 80, duration: 60 }
+  about: { a: 700, b: 300, tilt: 15, start: 45, duration: 50 },
+  education: { a: 950, b: 450, tilt: -20, start: 120, duration: 65 },
+  projects: { a: 1125, b: 500, tilt: 35, start: 200, duration: 80 },
+  community: { a: 800, b: 625, tilt: -35, start: 280, duration: 55 },
+  beyond: { a: 1250, b: 400, tilt: 10, start: 320, duration: 90 },
+  probability: { a: 650, b: 550, tilt: 50, start: 160, duration: 45 },
+  gravity: { a: 1050, b: 750, tilt: -15, start: 240, duration: 75 },
+  contact: { a: 875, b: 325, tilt: 25, start: 80, duration: 60 }
 };
 
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
@@ -242,6 +242,14 @@ function initPlanetOrbits() {
     const cy = window.innerHeight * 0.55;
 
     planetOrbitNodes.forEach(({ element, planet }) => {
+      if (planet.id === "about") {
+        const scale = element.classList.contains("is-selected") ? " scale(1.34)" : "";
+        element.style.left = `${cx}px`;
+        element.style.top = `${cy}px`;
+        element.style.transform = `translate(-50%, -50%)${scale}`;
+        return;
+      }
+
       const orbit = orbitDefinitions[planet.id];
       const tilt = orbit.tilt * Math.PI / 180;
       const start = orbit.start * Math.PI / 180;
