@@ -18,8 +18,8 @@ const orbitDefinitions = {
 
 const panelTargets = {
   void: { id: "void", color: "#111111" },
-  probability: { id: "probability", color: "#9a4125" },
-  gravity: { id: "gravity", color: "#5e98af" }
+  invaders: { id: "invaders", color: "#C4522A" },
+  pong: { id: "pong", color: "#7ab8d4" }
 };
 
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
@@ -104,51 +104,67 @@ const contentRenderers = {
     <section class="panel-section">
       <p class="eyebrow">Contact</p>
       <h2 class="section-title">Let's talk</h2>
-      <ul class="contact-list">
-        <li><a href="mailto:ed.mtz.ga@gmail.com">ed.mtz.ga@gmail.com</a></li>
-        <li><a href="https://github.com/Eduardo-Angel-Martinez">github.com/Eduardo-Angel-Martinez</a></li>
-        <li><span>+52 55 7895 2017</span></li>
-      </ul>
+      <div class="contact-card-grid">
+        <a class="contact-card" href="mailto:ed.mtz.ga@gmail.com">
+          <span class="contact-icon" aria-hidden="true">
+            <svg class="gmail-icon" viewBox="0 0 64 48" role="img">
+              <defs>
+                <linearGradient id="gmailNebula" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#8b6fb5"/>
+                  <stop offset="0.55" stop-color="#C4522A"/>
+                  <stop offset="1" stop-color="#f0c060"/>
+                </linearGradient>
+              </defs>
+              <path d="M6 8h10l16 14L48 8h10v34H46V24L32 36 18 24v18H6z" fill="url(#gmailNebula)"/>
+            </svg>
+          </span>
+          <span class="contact-label">Email</span>
+          <span class="contact-value">ed.mtz.ga@gmail.com</span>
+        </a>
+        <a class="contact-card" href="https://github.com/Eduardo-Angel-Martinez">
+          <span class="contact-icon" aria-hidden="true">
+            <svg class="github-icon" viewBox="0 0 64 64" role="img">
+              <defs>
+                <radialGradient id="githubCosmos" cx="50%" cy="40%" r="58%">
+                  <stop offset="0" stop-color="#f0ede8"/>
+                  <stop offset="0.42" stop-color="#7ab8d4"/>
+                  <stop offset="1" stop-color="#061526"/>
+                </radialGradient>
+              </defs>
+              <path d="M32 6C17.6 6 6 17.8 6 32.4c0 11.6 7.4 21.5 17.7 25 1.3.2 1.8-.6 1.8-1.3v-4.7c-7.2 1.6-8.7-3.1-8.7-3.1-1.2-3.1-2.9-3.9-2.9-3.9-2.4-1.7.2-1.7.2-1.7 2.6.2 4 2.8 4 2.8 2.4 4.1 6.2 2.9 7.7 2.2.2-1.7.9-2.9 1.7-3.6-5.7-.7-11.8-2.9-11.8-12.9 0-2.9 1-5.2 2.7-7-0.3-.7-1.2-3.4.3-6.9 0 0 2.2-.7 7.2 2.7 2.1-.6 4.3-.9 6.5-.9s4.4.3 6.5.9c5-3.4 7.2-2.7 7.2-2.7 1.5 3.5.6 6.2.3 6.9 1.7 1.8 2.7 4.1 2.7 7 0 10-6.1 12.2-11.9 12.8.9.8 1.8 2.5 1.8 5v7.1c0 .7.5 1.5 1.8 1.3A26.4 26.4 0 0 0 58 32.4C58 17.8 46.4 6 32 6z" fill="url(#githubCosmos)"/>
+            </svg>
+          </span>
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">Eduardo-Angel-Martinez</span>
+        </a>
+      </div>
       <p class="copyright">© 2026 Eduardo Ángel Martínez Garduño</p>
     </section>
   `,
-  probability: () => `
+  invaders: () => `
     <section class="panel-section">
       <p class="eyebrow">Minigame</p>
-      <h2 class="game-title">Probability Planet</h2>
-      <p class="subtitle">Test your statistical intuition</p>
-      <div class="game-grid">
-        <div class="game-card">
-          <div class="playing-card" id="current-card">A♠</div>
-          <div class="game-actions">
-            <button class="action-button primary" id="higher-btn" type="button">Higher ▲</button>
-            <button class="action-button primary" id="lower-btn" type="button">Lower ▼</button>
-            <button class="action-button" id="play-again-btn" type="button" hidden>Play again</button>
-          </div>
-        </div>
-        <div class="game-card">
-          <div class="game-hud"><span id="score">Score: 0</span><span id="streak">Streak: 0</span></div>
-          <p class="feedback" id="probability-feedback"></p>
+      <h2 class="game-title">Space Invaders</h2>
+      <div class="game-card arcade-card">
+        <div class="game-hud"><span id="invaders-score">Score: 0</span><span id="invaders-lives">Lives: 3</span></div>
+        <canvas class="arcade-canvas" id="invaders-canvas" width="820" height="460" aria-label="Space Invaders game"></canvas>
+        <div class="puzzle-actions">
+          <button class="action-button" id="invaders-restart" type="button">Restart</button>
+          <span class="feedback" id="invaders-feedback">Move with Arrow keys or A/D. Shoot with Space.</span>
         </div>
       </div>
     </section>
   `,
-  gravity: () => `
+  pong: () => `
     <section class="panel-section">
       <p class="eyebrow">Minigame</p>
-      <h2 class="game-title">Gravity Puzzle</h2>
-      <p class="subtitle">Navigate through gravitational fields</p>
-      <div class="game-card">
-        <div class="game-hud">
-          <span id="gravity-level">Level 1</span>
-          <span id="gravity-score">Score: 0</span>
-          <span id="gravity-time">Time: 0.0s</span>
-          <span id="gravity-fuel">Fuel: 100</span>
-        </div>
-        <canvas class="gravity-canvas" id="gravity-canvas" width="820" height="420" aria-label="Gravity Puzzle game"></canvas>
+      <h2 class="game-title">Pong</h2>
+      <div class="game-card arcade-card">
+        <div class="game-hud"><span id="pong-player">You: 0</span><span id="pong-computer">Computer: 0</span></div>
+        <canvas class="arcade-canvas" id="pong-canvas" width="820" height="420" aria-label="Pong game"></canvas>
         <div class="puzzle-actions">
-          <button class="action-button" id="gravity-retry" type="button">Retry level</button>
-          <span class="feedback" id="gravity-feedback">Click or tap the canvas to thrust.</span>
+          <button class="action-button" id="pong-restart" type="button">Restart</button>
+          <span class="feedback" id="pong-feedback">Move with W/S. First to 7 wins.</span>
         </div>
       </div>
     </section>
@@ -156,17 +172,17 @@ const contentRenderers = {
   void: () => `
     <section class="panel-section">
       <p class="eyebrow">The Void</p>
-      <h2 class="game-title">Choose a gravity well</h2>
+      <h2 class="game-title">Choose an arcade signal</h2>
       <div class="project-grid">
-        <button class="void-game-card" type="button" data-void-game="probability">
+        <button class="void-game-card" type="button" data-void-game="invaders">
           <span class="meta">Minigame</span>
-          <strong>Probability Planet</strong>
-          <span>Test your statistical intuition with higher-or-lower cards.</span>
+          <strong>Space Invaders</strong>
+          <span>Defend the lower orbit from descending alien rows.</span>
         </button>
-        <button class="void-game-card" type="button" data-void-game="gravity">
+        <button class="void-game-card" type="button" data-void-game="pong">
           <span class="meta">Minigame</span>
-          <strong>Gravity Puzzle</strong>
-          <span>Navigate through gravitational fields with limited fuel.</span>
+          <strong>Pong</strong>
+          <span>Outplay a delayed computer paddle in a glowing space arena.</span>
         </button>
       </div>
     </section>
@@ -196,8 +212,8 @@ const panelContentEl = document.getElementById("panel-content");
 const panelOrbEl = document.getElementById("panel-orb");
 const closePanelEl = document.getElementById("close-panel");
 let activePlanet = null;
-let probabilityGame = null;
-let gravityGame = null;
+let invadersGame = null;
+let pongGame = null;
 let zoomTimer = null;
 let orbitPathNodes = [];
 let orbitAnimationNodes = [];
@@ -317,6 +333,7 @@ function initPlanetOrbits() {
 function openPlanet(id) {
   const panelTarget = planets.find((item) => item.id === id) || panelTargets[id];
   if (!panelTarget) return;
+  stopActiveGame();
   window.clearTimeout(zoomTimer);
   activePlanet = id;
   panelContentEl.innerHTML = contentRenderers[id]();
@@ -334,8 +351,8 @@ function openPlanet(id) {
     closePanelEl.focus({ preventScroll: true });
 
     if (id === "void") initVoidPanel();
-    if (id === "probability") initProbabilityGame();
-    if (id === "gravity") initGravityGame();
+    if (id === "invaders") initSpaceInvaders();
+    if (id === "pong") initPong();
   }, 260);
 }
 
@@ -348,10 +365,7 @@ function closePlanet() {
   document.body.classList.remove("map-zoom");
   document.body.classList.remove("panel-open");
   document.body.style.overflow = "";
-  if (gravityGame) {
-    gravityGame.stop();
-    gravityGame = null;
-  }
+  stopActiveGame();
 }
 
 function staggerChildren() {
@@ -364,6 +378,17 @@ function initVoidPanel() {
   panelContentEl.querySelectorAll("[data-void-game]").forEach((card) => {
     card.addEventListener("click", () => openPlanet(card.dataset.voidGame));
   });
+}
+
+function stopActiveGame() {
+  if (invadersGame) {
+    invadersGame.stop();
+    invadersGame = null;
+  }
+  if (pongGame) {
+    pongGame.stop();
+    pongGame = null;
+  }
 }
 
 closePanelEl.addEventListener("click", closePlanet);
@@ -486,104 +511,24 @@ function initStarField() {
   requestAnimationFrame(draw);
 }
 
-function createDeck() {
-  const suits = ["♠", "♥", "♦", "♣"];
-  const ranks = [
-    ["A", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["6", 6], ["7", 7],
-    ["8", 8], ["9", 9], ["10", 10], ["J", 11], ["Q", 12], ["K", 13]
-  ];
-  return suits.flatMap((suit) => ranks.map(([label, value]) => ({ suit, label, value })))
-    .sort(() => Math.random() - 0.5);
-}
-
-function initProbabilityGame() {
-  probabilityGame = {
-    deck: createDeck(),
-    current: null,
-    score: 0,
-    streak: 0,
-    stopped: false
-  };
-  probabilityGame.current = probabilityGame.deck.pop();
-  const cardEl = document.getElementById("current-card");
-  const scoreEl = document.getElementById("score");
-  const streakEl = document.getElementById("streak");
-  const feedbackEl = document.getElementById("probability-feedback");
-  const higherBtn = document.getElementById("higher-btn");
-  const lowerBtn = document.getElementById("lower-btn");
-  const againBtn = document.getElementById("play-again-btn");
-
-  function render() {
-    const card = probabilityGame.current;
-    cardEl.textContent = `${card.label}${card.suit}`;
-    cardEl.classList.toggle("card-red", card.suit === "♥" || card.suit === "♦");
-    scoreEl.textContent = `Score: ${probabilityGame.score}`;
-    streakEl.textContent = `Streak: ${probabilityGame.streak}`;
-    higherBtn.disabled = probabilityGame.stopped;
-    lowerBtn.disabled = probabilityGame.stopped;
-    againBtn.hidden = !probabilityGame.stopped;
-  }
-
-  function chance(direction) {
-    const matches = probabilityGame.deck.filter((card) => (
-      direction === "higher"
-        ? card.value > probabilityGame.current.value
-        : card.value < probabilityGame.current.value
-    )).length;
-    return probabilityGame.deck.length ? Math.round((matches / probabilityGame.deck.length) * 100) : 0;
-  }
-
-  function guess(direction) {
-    if (probabilityGame.stopped || probabilityGame.deck.length === 0) return;
-    const probability = chance(direction);
-    const next = probabilityGame.deck.pop();
-    const correct = direction === "higher"
-      ? next.value > probabilityGame.current.value
-      : next.value < probabilityGame.current.value;
-
-    if (correct) {
-      probabilityGame.current = next;
-      probabilityGame.score += 1;
-      probabilityGame.streak += 1;
-      feedbackEl.textContent = `Correct. The next card was ${next.label}${next.suit}.`;
-    } else {
-      probabilityGame.stopped = true;
-      feedbackEl.textContent = `Wrong: the next card was ${next.label}${next.suit}. The probability of that guess was ${probability}%.`;
-    }
-    render();
-  }
-
-  higherBtn.onclick = () => guess("higher");
-  lowerBtn.onclick = () => guess("lower");
-  againBtn.onclick = initProbabilityGame;
-  feedbackEl.textContent = "Will the next card be higher or lower?";
-  render();
-}
-
-class GravityGame {
+class SpaceInvadersGame {
   constructor() {
-    this.canvas = document.getElementById("gravity-canvas");
+    this.canvas = document.getElementById("invaders-canvas");
     this.ctx = this.canvas.getContext("2d");
-    this.feedback = document.getElementById("gravity-feedback");
-    this.levelEl = document.getElementById("gravity-level");
-    this.scoreEl = document.getElementById("gravity-score");
-    this.timeEl = document.getElementById("gravity-time");
-    this.fuelEl = document.getElementById("gravity-fuel");
-    this.retryBtn = document.getElementById("gravity-retry");
-    this.levels = [
-      { wells: [{ x: 0.45, y: 0.46, mass: 900 }], target: { x: 0.86, y: 0.24 } },
-      { wells: [{ x: 0.42, y: 0.35, mass: 980 }, { x: 0.66, y: 0.68, mass: 760 }], target: { x: 0.88, y: 0.76 } },
-      { wells: [{ x: 0.34, y: 0.28, mass: 900 }, { x: 0.58, y: 0.58, mass: 1100 }, { x: 0.76, y: 0.35, mass: 720 }], target: { x: 0.9, y: 0.5 } }
-    ];
-    this.level = 0;
-    this.totalScore = 0;
-    this.boundThrust = this.thrust.bind(this);
+    this.scoreEl = document.getElementById("invaders-score");
+    this.livesEl = document.getElementById("invaders-lives");
+    this.feedback = document.getElementById("invaders-feedback");
+    this.restartBtn = document.getElementById("invaders-restart");
+    this.keys = new Set();
+    this.boundKeyDown = this.keyDown.bind(this);
+    this.boundKeyUp = this.keyUp.bind(this);
     this.boundResize = this.resize.bind(this);
-    this.retryBtn.addEventListener("click", () => this.resetLevel());
-    this.canvas.addEventListener("pointerdown", this.boundThrust);
+    this.restartBtn.addEventListener("click", () => this.reset());
+    document.addEventListener("keydown", this.boundKeyDown);
+    document.addEventListener("keyup", this.boundKeyUp);
     window.addEventListener("resize", this.boundResize);
     this.resize();
-    this.resetLevel();
+    this.reset();
     this.loop = this.loop.bind(this);
     this.raf = requestAnimationFrame(this.loop);
   }
@@ -591,151 +536,317 @@ class GravityGame {
   resize() {
     const rect = this.canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    this.canvas.width = Math.max(320, Math.floor(rect.width * dpr));
+    this.canvas.width = Math.max(360, Math.floor(rect.width * dpr));
+    this.canvas.height = Math.max(260, Math.floor(rect.height * dpr));
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.width = this.canvas.width / dpr;
+    this.height = this.canvas.height / dpr;
+  }
+
+  reset() {
+    this.score = 0;
+    this.lives = 3;
+    this.player = { x: this.width / 2, y: this.height - 34, w: 36, h: 14 };
+    this.bullets = [];
+    this.alienBullets = [];
+    this.aliens = [];
+    this.direction = 1;
+    this.stepDown = 18;
+    this.shootCooldown = 0;
+    this.alienShotClock = 0;
+    this.gameOver = false;
+    this.feedback.textContent = "Move with Arrow keys or A/D. Shoot with Space.";
+    for (let row = 0; row < 4; row += 1) {
+      for (let col = 0; col < 9; col += 1) {
+        this.aliens.push({ x: 84 + col * 54, y: 54 + row * 34, w: 26, h: 18, alive: true });
+      }
+    }
+  }
+
+  keyDown(event) {
+    if (["ArrowLeft", "ArrowRight", "KeyA", "KeyD", "Space"].includes(event.code)) event.preventDefault();
+    this.keys.add(event.code);
+    if (event.code === "Space") this.shoot();
+  }
+
+  keyUp(event) {
+    this.keys.delete(event.code);
+  }
+
+  shoot() {
+    if (this.gameOver || this.shootCooldown > 0) return;
+    this.bullets.push({ x: this.player.x, y: this.player.y - 14, vy: -7 });
+    this.shootCooldown = 16;
+  }
+
+  loop() {
+    this.update();
+    this.draw();
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
+  update() {
+    if (this.gameOver) return;
+    const left = this.keys.has("ArrowLeft") || this.keys.has("KeyA");
+    const right = this.keys.has("ArrowRight") || this.keys.has("KeyD");
+    this.player.x += (right - left) * 6;
+    this.player.x = Math.max(22, Math.min(this.width - 22, this.player.x));
+    this.shootCooldown = Math.max(0, this.shootCooldown - 1);
+
+    let hitEdge = false;
+    const speed = 0.52 + this.score * 0.002;
+    this.aliens.forEach((alien) => {
+      if (!alien.alive) return;
+      alien.x += this.direction * speed;
+      if (alien.x < 28 || alien.x > this.width - 28) hitEdge = true;
+    });
+    if (hitEdge) {
+      this.direction *= -1;
+      this.aliens.forEach((alien) => {
+        alien.y += this.stepDown;
+      });
+    }
+
+    this.bullets.forEach((bullet) => {
+      bullet.y += bullet.vy;
+      this.aliens.forEach((alien) => {
+        if (!alien.alive || bullet.hit) return;
+        if (Math.abs(bullet.x - alien.x) < alien.w / 2 && Math.abs(bullet.y - alien.y) < alien.h / 2) {
+          alien.alive = false;
+          bullet.hit = true;
+          this.score += 10;
+        }
+      });
+    });
+    this.bullets = this.bullets.filter((bullet) => bullet.y > -20 && !bullet.hit);
+
+    this.alienShotClock += 1;
+    if (this.alienShotClock > 70 && this.aliens.some((alien) => alien.alive)) {
+      const living = this.aliens.filter((alien) => alien.alive);
+      const shooter = living[Math.floor(Math.random() * living.length)];
+      this.alienBullets.push({ x: shooter.x, y: shooter.y + 12, vy: 3.8 });
+      this.alienShotClock = 0;
+    }
+    this.alienBullets.forEach((bullet) => {
+      bullet.y += bullet.vy;
+      if (Math.abs(bullet.x - this.player.x) < this.player.w / 2 && Math.abs(bullet.y - this.player.y) < this.player.h) {
+        bullet.hit = true;
+        this.loseLife();
+      }
+    });
+    this.alienBullets = this.alienBullets.filter((bullet) => bullet.y < this.height + 20 && !bullet.hit);
+
+    if (this.aliens.some((alien) => alien.alive && alien.y > this.player.y - 24)) this.loseLife();
+    if (!this.aliens.some((alien) => alien.alive)) {
+      this.feedback.textContent = "Wave cleared. Restart to defend another orbit.";
+      this.gameOver = true;
+    }
+    this.scoreEl.textContent = `Score: ${this.score}`;
+    this.livesEl.textContent = `Lives: ${this.lives}`;
+  }
+
+  loseLife() {
+    this.lives -= 1;
+    this.alienBullets = [];
+    this.aliens.forEach((alien) => {
+      alien.y = Math.max(42, alien.y - 24);
+    });
+    if (this.lives <= 0) {
+      this.gameOver = true;
+      this.feedback.textContent = "Game over. Restart to try again.";
+    }
+  }
+
+  draw() {
+    const ctx = this.ctx;
+    ctx.clearRect(0, 0, this.width, this.height);
+    drawArcadeBackdrop(ctx, this.width, this.height);
+    ctx.fillStyle = "#7ab8d4";
+    ctx.shadowColor = "#7ab8d4";
+    ctx.shadowBlur = 14;
+    ctx.fillRect(this.player.x - this.player.w / 2, this.player.y - this.player.h / 2, this.player.w, this.player.h);
+    ctx.fillRect(this.player.x - 5, this.player.y - 20, 10, 12);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "#f0c060";
+    this.bullets.forEach((bullet) => ctx.fillRect(bullet.x - 2, bullet.y - 8, 4, 12));
+    ctx.fillStyle = "#C4522A";
+    this.alienBullets.forEach((bullet) => ctx.fillRect(bullet.x - 2, bullet.y - 2, 4, 9));
+    this.aliens.forEach((alien) => {
+      if (!alien.alive) return;
+      ctx.fillStyle = "#f0ede8";
+      ctx.fillRect(alien.x - 13, alien.y - 8, 26, 10);
+      ctx.fillRect(alien.x - 9, alien.y - 14, 18, 6);
+      ctx.fillStyle = "#C4522A";
+      ctx.fillRect(alien.x - 9, alien.y - 2, 5, 5);
+      ctx.fillRect(alien.x + 4, alien.y - 2, 5, 5);
+    });
+    if (this.gameOver) drawGameOverlay(ctx, this.width, this.height, this.feedback.textContent);
+  }
+
+  stop() {
+    cancelAnimationFrame(this.raf);
+    document.removeEventListener("keydown", this.boundKeyDown);
+    document.removeEventListener("keyup", this.boundKeyUp);
+    window.removeEventListener("resize", this.boundResize);
+  }
+}
+
+class PongGame {
+  constructor() {
+    this.canvas = document.getElementById("pong-canvas");
+    this.ctx = this.canvas.getContext("2d");
+    this.playerEl = document.getElementById("pong-player");
+    this.computerEl = document.getElementById("pong-computer");
+    this.feedback = document.getElementById("pong-feedback");
+    this.restartBtn = document.getElementById("pong-restart");
+    this.keys = new Set();
+    this.boundKeyDown = this.keyDown.bind(this);
+    this.boundKeyUp = this.keyUp.bind(this);
+    this.boundResize = this.resize.bind(this);
+    this.restartBtn.addEventListener("click", () => this.reset());
+    document.addEventListener("keydown", this.boundKeyDown);
+    document.addEventListener("keyup", this.boundKeyUp);
+    window.addEventListener("resize", this.boundResize);
+    this.resize();
+    this.reset();
+    this.loop = this.loop.bind(this);
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
+  resize() {
+    const rect = this.canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.canvas.width = Math.max(360, Math.floor(rect.width * dpr));
     this.canvas.height = Math.max(240, Math.floor(rect.height * dpr));
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     this.width = this.canvas.width / dpr;
     this.height = this.canvas.height / dpr;
   }
 
-  resetLevel() {
-    this.ship = { x: this.width * 0.12, y: this.height * 0.52, vx: 0.95, vy: 0, angle: 0 };
-    this.fuel = 100;
-    this.levelStart = performance.now();
+  reset() {
+    this.playerScore = 0;
+    this.computerScore = 0;
+    this.player = { x: 28, y: this.height / 2, w: 10, h: 76 };
+    this.computer = { x: this.width - 28, y: this.height / 2, w: 10, h: 76 };
+    this.ball = { x: this.width / 2, y: this.height / 2, vx: 4.2, vy: 2.5, r: 7 };
     this.finished = false;
-    this.failed = false;
-    this.feedback.textContent = "Click or tap the canvas to thrust.";
+    this.feedback.textContent = "Move with W/S. First to 7 wins.";
   }
 
-  thrust(event) {
-    event.preventDefault();
-    if (this.finished || this.failed || this.fuel <= 0) return;
-    const thrust = 1.55;
-    this.ship.vx += Math.cos(this.ship.angle) * thrust;
-    this.ship.vy += Math.sin(this.ship.angle) * thrust;
-    this.fuel = Math.max(0, this.fuel - 7);
+  keyDown(event) {
+    if (["KeyW", "KeyS"].includes(event.code)) event.preventDefault();
+    this.keys.add(event.code);
   }
 
-  loop(now) {
-    this.update(now);
-    this.draw(now);
+  keyUp(event) {
+    this.keys.delete(event.code);
+  }
+
+  loop() {
+    this.update();
+    this.draw();
     this.raf = requestAnimationFrame(this.loop);
   }
 
-  update(now) {
-    if (this.finished || this.failed) return;
-    const level = this.levels[this.level];
-    const dt = 1 / 60;
-    level.wells.forEach((well) => {
-      const wx = well.x * this.width;
-      const wy = well.y * this.height;
-      const dx = wx - this.ship.x;
-      const dy = wy - this.ship.y;
-      const distSq = Math.max(dx * dx + dy * dy, 900);
-      const dist = Math.sqrt(distSq);
-      const force = Math.min(3400, well.mass / distSq) * 54;
-      this.ship.vx += (dx / dist) * force * dt;
-      this.ship.vy += (dy / dist) * force * dt;
-      if (dist < 24) this.fail("The ship crossed a gravity well. Retry the level.");
-    });
+  update() {
+    if (this.finished) return;
+    this.player.y += (this.keys.has("KeyS") - this.keys.has("KeyW")) * 6.4;
+    this.player.y = Math.max(this.player.h / 2, Math.min(this.height - this.player.h / 2, this.player.y));
+    const target = this.ball.y - this.computer.y;
+    this.computer.y += Math.max(-4.1, Math.min(4.1, target * 0.055));
+    this.computer.y = Math.max(this.computer.h / 2, Math.min(this.height - this.computer.h / 2, this.computer.y));
+    this.ball.x += this.ball.vx;
+    this.ball.y += this.ball.vy;
+    if (this.ball.y < this.ball.r || this.ball.y > this.height - this.ball.r) this.ball.vy *= -1;
+    this.paddleBounce(this.player, 1);
+    this.paddleBounce(this.computer, -1);
+    if (this.ball.x < -20) this.score("computer");
+    if (this.ball.x > this.width + 20) this.score("player");
+    this.playerEl.textContent = `You: ${this.playerScore}`;
+    this.computerEl.textContent = `Computer: ${this.computerScore}`;
+  }
 
-    this.ship.x += this.ship.vx;
-    this.ship.y += this.ship.vy;
-    this.ship.vx *= 0.997;
-    this.ship.vy *= 0.997;
-    this.ship.angle = Math.atan2(this.ship.vy, this.ship.vx);
-
-    const target = { x: level.target.x * this.width, y: level.target.y * this.height };
-    if (Math.hypot(target.x - this.ship.x, target.y - this.ship.y) < 28) this.win(now);
-    if (this.ship.x < -30 || this.ship.x > this.width + 30 || this.ship.y < -30 || this.ship.y > this.height + 30) {
-      this.fail("The ship drifted out of bounds. Retry the level.");
+  paddleBounce(paddle, direction) {
+    if (
+      Math.abs(this.ball.x - paddle.x) < paddle.w / 2 + this.ball.r &&
+      Math.abs(this.ball.y - paddle.y) < paddle.h / 2 + this.ball.r
+    ) {
+      const offset = (this.ball.y - paddle.y) / (paddle.h / 2);
+      this.ball.vx = direction * Math.min(7.2, Math.abs(this.ball.vx) + 0.34);
+      this.ball.vy = offset * 4.8;
     }
   }
 
-  win(now) {
-    const elapsed = (now - this.levelStart) / 1000;
-    const earned = Math.max(100, Math.round(1000 - elapsed * 35 + this.fuel * 5));
-    this.totalScore += earned;
-    this.finished = true;
-    if (this.level < this.levels.length - 1) {
-      this.feedback.textContent = `Level complete: +${earned}. Advancing...`;
-      setTimeout(() => {
-        this.level += 1;
-        this.resetLevel();
-      }, 900);
-    } else {
-      this.feedback.textContent = `Puzzle complete. Final score: ${this.totalScore}.`;
+  score(side) {
+    if (side === "player") this.playerScore += 1;
+    if (side === "computer") this.computerScore += 1;
+    this.ball = { x: this.width / 2, y: this.height / 2, vx: side === "player" ? -4.2 : 4.2, vy: (Math.random() - 0.5) * 4.8, r: 7 };
+    if (this.playerScore >= 7 || this.computerScore >= 7) {
+      this.finished = true;
+      this.feedback.textContent = this.playerScore > this.computerScore ? "You win. Restart for another match." : "Computer wins. Restart to run it back.";
     }
   }
 
-  fail(message) {
-    this.failed = true;
-    this.feedback.textContent = message;
-  }
-
-  draw(now) {
+  draw() {
     const ctx = this.ctx;
     ctx.clearRect(0, 0, this.width, this.height);
-    ctx.fillStyle = "rgba(2, 3, 8, 0.84)";
-    ctx.fillRect(0, 0, this.width, this.height);
-    const level = this.levels[this.level];
-    const elapsed = (now - this.levelStart) / 1000;
-    this.levelEl.textContent = `Level ${this.level + 1}`;
-    this.scoreEl.textContent = `Score: ${this.totalScore}`;
-    this.timeEl.textContent = `Time: ${elapsed.toFixed(1)}s`;
-    this.fuelEl.textContent = `Fuel: ${this.fuel}`;
-
-    level.wells.forEach((well) => {
-      const x = well.x * this.width;
-      const y = well.y * this.height;
-      const gradient = ctx.createRadialGradient(x, y, 4, x, y, 70);
-      gradient.addColorStop(0, "rgba(196, 82, 42, 0.95)");
-      gradient.addColorStop(1, "rgba(196, 82, 42, 0)");
-      ctx.fillStyle = gradient;
-      ctx.beginPath();
-      ctx.arc(x, y, 70, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = "#C4522A";
-      ctx.beginPath();
-      ctx.arc(x, y, 10, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    const target = level.target;
-    const tx = target.x * this.width;
-    const ty = target.y * this.height;
-    ctx.fillStyle = "#f0c060";
-    ctx.shadowColor = "#f0c060";
-    ctx.shadowBlur = 18;
+    drawArcadeBackdrop(ctx, this.width, this.height);
+    ctx.setLineDash([8, 10]);
+    ctx.strokeStyle = "rgba(240,237,232,0.22)";
     ctx.beginPath();
-    ctx.arc(tx, ty, 13, 0, Math.PI * 2);
+    ctx.moveTo(this.width / 2, 18);
+    ctx.lineTo(this.width / 2, this.height - 18);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.shadowColor = "#a8d8ff";
+    ctx.shadowBlur = 18;
+    ctx.fillStyle = "#dff6ff";
+    ctx.fillRect(this.player.x - this.player.w / 2, this.player.y - this.player.h / 2, this.player.w, this.player.h);
+    ctx.fillRect(this.computer.x - this.computer.w / 2, this.computer.y - this.computer.h / 2, this.computer.w, this.computer.h);
+    ctx.beginPath();
+    ctx.arc(this.ball.x, this.ball.y, this.ball.r, 0, Math.PI * 2);
+    ctx.fillStyle = "#f0c060";
     ctx.fill();
     ctx.shadowBlur = 0;
-
-    ctx.save();
-    ctx.translate(this.ship.x, this.ship.y);
-    ctx.rotate(this.ship.angle);
-    ctx.fillStyle = "#f0ede8";
-    ctx.beginPath();
-    ctx.moveTo(18, 0);
-    ctx.lineTo(-12, -10);
-    ctx.lineTo(-8, 0);
-    ctx.lineTo(-12, 10);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
+    if (this.finished) drawGameOverlay(ctx, this.width, this.height, this.feedback.textContent);
   }
 
   stop() {
     cancelAnimationFrame(this.raf);
-    this.canvas.removeEventListener("pointerdown", this.boundThrust);
+    document.removeEventListener("keydown", this.boundKeyDown);
+    document.removeEventListener("keyup", this.boundKeyUp);
     window.removeEventListener("resize", this.boundResize);
   }
 }
 
-function initGravityGame() {
-  if (gravityGame) gravityGame.stop();
-  gravityGame = new GravityGame();
+function drawArcadeBackdrop(ctx, width, height) {
+  ctx.fillStyle = "rgba(2, 3, 8, 0.92)";
+  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = "rgba(240,237,232,0.55)";
+  for (let i = 0; i < 48; i += 1) {
+    const x = (i * 83) % width;
+    const y = (i * 47) % height;
+    ctx.fillRect(x, y, 1.4, 1.4);
+  }
+}
+
+function drawGameOverlay(ctx, width, height, message) {
+  ctx.fillStyle = "rgba(0,0,0,0.58)";
+  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = "#f0ede8";
+  ctx.font = "20px 'DM Mono', monospace";
+  ctx.textAlign = "center";
+  ctx.fillText(message, width / 2, height / 2);
+}
+
+function initSpaceInvaders() {
+  if (invadersGame) invadersGame.stop();
+  invadersGame = new SpaceInvadersGame();
+}
+
+function initPong() {
+  if (pongGame) pongGame.stop();
+  pongGame = new PongGame();
 }
 
 renderNavigation();

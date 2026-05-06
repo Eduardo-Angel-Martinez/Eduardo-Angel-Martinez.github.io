@@ -647,20 +647,6 @@ body.map-zoom .orbit.is-selected .planet-group {
     linear-gradient(135deg, transparent 31%, rgba(225,210,255,0.09), transparent 38%);
 }
 
-.planet-button[data-planet="probability"] {
-  background:
-    radial-gradient(circle at 32% 22%, rgba(215, 122, 77, 0.34), transparent 14%),
-    radial-gradient(circle at 52% 54%, #80371f 0 18%, #4b1a12 49%, #100403 86%),
-    radial-gradient(circle at 72% 70%, rgba(196,82,42,0.22), transparent 24%);
-}
-
-.planet-button[data-planet="gravity"] {
-  background:
-    radial-gradient(circle at 28% 20%, rgba(220, 244, 249, 0.38), transparent 15%),
-    radial-gradient(circle at 52% 54%, #5d93a8 0 18%, #31566b 48%, #0b1d2d 86%),
-    repeating-linear-gradient(172deg, rgba(230,250,255,0.07) 0 3px, transparent 3px 14px);
-}
-
 .planet-button[data-planet="contact"] {
   background:
     radial-gradient(circle at 30% 24%, rgba(255,255,255,0.36), transparent 15%),
@@ -831,41 +817,29 @@ body.map-zoom .orbit.is-selected .planet-group {
   animation: crystal-glow 8s ease-in-out infinite;
 }
 
-.biome-probability::before {
-  background:
-    radial-gradient(circle at 22% 84%, rgba(255, 84, 35, 0.38), transparent 30%),
-    radial-gradient(circle at 78% 76%, rgba(196, 82, 42, 0.32), transparent 34%),
-    linear-gradient(145deg, #180604, #5b1b12 56%, #0b0202);
-}
-
-.biome-probability::after {
-  background:
-    radial-gradient(circle at 18% 84%, rgba(255,170,81,0.5) 0 2px, transparent 3px),
-    radial-gradient(circle at 68% 72%, rgba(255,125,65,0.36) 0 2px, transparent 4px),
-    repeating-linear-gradient(91deg, transparent 0 12px, rgba(255, 118, 53, 0.1) 12px 14px);
-  animation: ember-rise 5s ease-in-out infinite;
-}
-
-.biome-gravity::before {
-  background:
-    linear-gradient(180deg, rgba(124, 218, 255, 0.28), transparent 30%),
-    radial-gradient(ellipse at 48% 18%, rgba(195, 246, 255, 0.26), transparent 36%),
-    linear-gradient(165deg, #dceff7, #5d9fc1 34%, #14344f 72%, #061526);
-}
-
-.biome-gravity::after {
-  background:
-    linear-gradient(92deg, transparent, rgba(255,255,255,0.26), transparent),
-    repeating-linear-gradient(176deg, rgba(255,255,255,0.13) 0 4px, transparent 4px 18px);
-  animation: cloud-slide 10s linear infinite;
-}
-
 .biome-void::before {
   background:
     radial-gradient(circle at 78% 18%, #000 0 13%, rgba(12, 6, 18, 0.86) 18%, transparent 36%),
     radial-gradient(ellipse at 78% 18%, rgba(255, 183, 72, 0.22), transparent 28%),
     radial-gradient(circle at 18% 82%, rgba(57, 76, 162, 0.22), transparent 36%),
     linear-gradient(145deg, #010103, #07040d 54%, #000);
+}
+
+.biome-invaders::before,
+.biome-pong::before {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(196, 82, 42, 0.22), transparent 30%),
+    radial-gradient(circle at 22% 82%, rgba(122, 184, 212, 0.18), transparent 34%),
+    linear-gradient(145deg, #020308, #070a14 54%, #000);
+}
+
+.biome-invaders::after,
+.biome-pong::after {
+  background:
+    linear-gradient(rgba(240,237,232,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240,237,232,0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.26;
 }
 
 .biome-void::after {
@@ -877,16 +851,18 @@ body.map-zoom .orbit.is-selected .planet-group {
 
 .biome-contact::before {
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.74), rgba(164, 174, 184, 0.32) 38%, rgba(10, 13, 18, 0.94)),
-    radial-gradient(circle at 82% 18%, rgba(255,255,255,0.36), transparent 24%);
+    radial-gradient(circle at 82% 18%, rgba(255,255,255,0.32), transparent 24%),
+    linear-gradient(135deg, rgba(230,236,244,0.34), rgba(99, 111, 126, 0.22) 38%, rgba(7, 10, 15, 0.94)),
+    linear-gradient(165deg, #0b0f16, #232b34 54%, #05070b);
 }
 
 .biome-contact::after {
   background:
-    linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
-  background-size: 44px 44px;
-  opacity: 0.24;
+    linear-gradient(rgba(255,255,255,0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.14) 1px, transparent 1px),
+    linear-gradient(122deg, transparent 38%, rgba(255,255,255,0.16), transparent 44%);
+  background-size: 44px 44px, 44px 44px, auto;
+  opacity: 0.28;
 }
 
 .close-panel {
@@ -1185,20 +1161,74 @@ body.map-zoom .orbit.is-selected .planet-group {
   background: var(--surface);
 }
 
-.contact-list {
+.contact-card-grid {
   display: grid;
-  gap: 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 }
 
-.contact-list a,
-.contact-list span {
-  display: inline-flex;
-  max-width: 100%;
+.contact-card {
+  display: grid;
+  gap: 10px;
+  min-height: 210px;
+  align-content: center;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 8px;
+  padding: 22px;
+  color: var(--text);
   overflow-wrap: anywhere;
+  background:
+    radial-gradient(circle at 20% 16%, rgba(255,255,255,0.12), transparent 28%),
+    rgba(255,255,255,0.05);
+  box-shadow: inset 0 0 34px rgba(255,255,255,0.035), 0 18px 44px rgba(0,0,0,0.26);
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.contact-card:hover,
+.contact-card:focus-visible {
+  border-color: rgba(240,192,96,0.42);
+  transform: translateY(-4px);
+  box-shadow: inset 0 0 34px rgba(255,255,255,0.06), 0 20px 48px rgba(122,184,212,0.16);
+}
+
+.contact-icon {
+  display: grid;
+  width: 72px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(122,184,212,0.18), transparent 44%),
+    rgba(0,0,0,0.28);
+}
+
+.contact-icon svg {
+  width: 54px;
+  height: 54px;
+  filter: drop-shadow(0 0 10px rgba(240,237,232,0.34));
+}
+
+.gmail-icon path {
+  stroke: rgba(255,255,255,0.44);
+  stroke-width: 1.5;
+}
+
+.github-icon path {
+  stroke: rgba(220,246,255,0.84);
+  stroke-width: 1.6;
+}
+
+.contact-label {
+  color: var(--accent2);
   font-family: var(--mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.contact-value {
+  font-family: var(--mono);
+  line-height: 1.45;
 }
 
 .copyright {
@@ -1210,24 +1240,6 @@ body.map-zoom .orbit.is-selected .planet-group {
 .game-card {
   display: grid;
   gap: 18px;
-}
-
-.playing-card {
-  display: grid;
-  width: min(180px, 52vw);
-  aspect-ratio: 0.72;
-  place-items: center;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
-  color: var(--bg);
-  font-family: var(--serif);
-  font-size: 3.5rem;
-  background: linear-gradient(145deg, #f7f1e4, #cfc2ad);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.34);
-}
-
-.card-red {
-  color: #a92c21;
 }
 
 .game-actions,
@@ -1263,14 +1275,14 @@ body.map-zoom .orbit.is-selected .planet-group {
   color: var(--accent2);
 }
 
-.gravity-canvas {
+.arcade-canvas {
   width: 100%;
   height: min(52vh, 440px);
   min-height: 300px;
   border: 1px solid rgba(255,255,255,0.14);
   border-radius: 8px;
-  background: rgba(0,0,0,0.42);
-  touch-action: manipulation;
+  background: rgba(0,0,0,0.58);
+  image-rendering: pixelated;
 }
 
 @media (max-width: 760px) {
