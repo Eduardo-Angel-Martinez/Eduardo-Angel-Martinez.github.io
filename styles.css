@@ -186,6 +186,11 @@ body.map-zoom .orbit.is-selected .planet-group {
   text-align: center;
 }
 
+.sun .planet-button {
+  cursor: default;
+  pointer-events: none;
+}
+
 .sun:hover,
 .sun:focus-visible {
   outline: 0;
@@ -494,7 +499,7 @@ body.map-zoom .orbit.is-selected .planet-group {
 .planet-button[data-planet="beyond"] {
   background:
     radial-gradient(circle at 30% 22%, rgba(190, 164, 220, 0.34), transparent 15%),
-    radial-gradient(circle at 54% 52%, #5d4a7f 0 19%, #35234f 50%, #0f0618 86%),
+    radial-gradient(circle at 54% 52%, #8b6fb5 0 19%, #35234f 50%, #0f0618 86%),
     linear-gradient(135deg, transparent 31%, rgba(225,210,255,0.09), transparent 38%);
 }
 

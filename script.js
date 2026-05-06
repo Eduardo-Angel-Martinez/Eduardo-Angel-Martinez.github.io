@@ -1,9 +1,9 @@
 const planets = [
-  { id: "about", name: "About", mapLabel: "E D U A R D O", color: "#4a9eff", size: 82, speed: 25, x: 50, y: 55 },
+  { id: "about", name: "About", color: "#4a9eff", size: 82, speed: 25, x: 50, y: 55 },
   { id: "education", name: "Education", color: "#a9823b", size: 75, speed: 35, x: 61, y: 20 },
   { id: "projects", name: "Projects", color: "#357f76", size: 70, speed: 45, x: 84, y: 47 },
   { id: "community", name: "Community", color: "#496f49", size: 60, speed: 30, x: 34, y: 73 },
-  { id: "beyond", name: "Beyond", color: "#69518e", size: 65, speed: 55, x: 75, y: 78 },
+  { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 65, speed: 55, x: 75, y: 78 },
   { id: "probability", name: "Probability Game", color: "#9a4125", size: 55, speed: 20, x: 14, y: 61 },
   { id: "gravity", name: "Gravity Puzzle", color: "#5e98af", size: 60, speed: 65, x: 45, y: 15 },
   { id: "contact", name: "Contact", color: "#b9b9b5", size: 50, speed: 15, x: 54, y: 88 }
@@ -180,6 +180,7 @@ let probabilityGame = null;
 let gravityGame = null;
 let zoomTimer = null;
 let orbitPathNodes = [];
+let orbitAnimationNodes = [];
 
 function renderNavigation() {
   planets.forEach((planet) => {
@@ -226,6 +227,7 @@ function renderNavigation() {
     orbit.appendChild(spinner);
     orbitsEl.appendChild(orbit);
     orbitPathNodes.push({ element: path, orbit: orbitDefinitions[planet.id] });
+    orbitAnimationNodes.push({ group, spinner });
 
     const card = document.createElement("button");
     card.className = "mobile-card";
@@ -242,15 +244,13 @@ function renderNavigation() {
   star.style.setProperty("--planet-color", planets[0].color);
   star.style.setProperty("--planet-size", `${planets[0].size}px`);
 
-  const button = document.createElement("button");
-  button.className = "planet-button";
-  button.type = "button";
-  button.dataset.planet = "about";
-  button.dataset.label = "About";
-  button.dataset.mapLabel = "E D U A R D O";
-  button.setAttribute("aria-label", "Open About");
-  button.addEventListener("click", () => openPlanet("about"));
-  star.appendChild(button);
+  const core = document.createElement("div");
+  core.className = "planet-button";
+  core.dataset.planet = "about";
+  core.dataset.label = "Eduardo";
+  core.dataset.mapLabel = "E D U A R D O";
+  core.setAttribute("aria-hidden", "true");
+  star.appendChild(core);
   orbitsEl.appendChild(star);
 }
 
@@ -262,8 +262,27 @@ function updateOrbitPaths() {
 }
 
 function initPlanetOrbits() {
+  function updateOrbitSpeedBoosts() {
+    orbitAnimationNodes.forEach((node) => {
+      const rect = node.group.getBoundingClientRect();
+      const isOffscreen = (
+        rect.right < 0 ||
+        rect.left > window.innerWidth ||
+        rect.bottom < 0 ||
+        rect.top > window.innerHeight
+      );
+
+      [...node.spinner.getAnimations(), ...node.group.getAnimations()].forEach((animation) => {
+        animation.playbackRate = isOffscreen ? 3 : 1;
+      });
+    });
+
+    requestAnimationFrame(updateOrbitSpeedBoosts);
+  }
+
   updateOrbitPaths();
   window.addEventListener("resize", updateOrbitPaths);
+  requestAnimationFrame(updateOrbitSpeedBoosts);
 }
 
 function openPlanet(id) {
