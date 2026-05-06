@@ -9,6 +9,17 @@ const planets = [
   { id: "contact", name: "Contact", color: "#b9b9b5", size: 50, speed: 15, x: 54, y: 88 }
 ];
 
+const orbitDefinitions = {
+  about: { a: 280, b: 120, tilt: 15, start: 45, duration: 50 },
+  education: { a: 380, b: 180, tilt: -20, start: 120, duration: 65 },
+  projects: { a: 450, b: 200, tilt: 35, start: 200, duration: 80 },
+  community: { a: 320, b: 250, tilt: -35, start: 280, duration: 55 },
+  beyond: { a: 500, b: 160, tilt: 10, start: 320, duration: 90 },
+  probability: { a: 260, b: 220, tilt: 50, start: 160, duration: 45 },
+  gravity: { a: 420, b: 300, tilt: -15, start: 240, duration: 75 },
+  contact: { a: 350, b: 130, tilt: 25, start: 80, duration: 60 }
+};
+
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
 
 const contentRenderers = {
@@ -168,9 +179,16 @@ let activePlanet = null;
 let probabilityGame = null;
 let gravityGame = null;
 let zoomTimer = null;
+let planetOrbitNodes = [];
+let orbitPathNodes = [];
 
 function renderNavigation() {
   planets.forEach((planet) => {
+    const path = document.createElement("div");
+    path.className = "orbit-path";
+    path.dataset.planet = planet.id;
+    orbitsEl.appendChild(path);
+
     const orbit = document.createElement("div");
     orbit.className = "orbit";
     orbit.style.setProperty("--planet-x", `${planet.x}%`);
@@ -189,6 +207,8 @@ function renderNavigation() {
     button.addEventListener("click", () => openPlanet(planet.id));
     orbit.appendChild(button);
     orbitsEl.appendChild(orbit);
+    planetOrbitNodes.push({ element: orbit, planet });
+    orbitPathNodes.push({ element: path, orbit: orbitDefinitions[planet.id] });
 
     const card = document.createElement("button");
     card.className = "mobile-card";
@@ -202,6 +222,46 @@ function renderNavigation() {
 
   const centerNode = document.querySelector(".sun");
   if (centerNode) centerNode.addEventListener("click", () => openPlanet("about"));
+}
+
+function updateOrbitPaths() {
+  const center = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.55 };
+
+  orbitPathNodes.forEach(({ element, orbit }) => {
+    element.style.width = `${orbit.a * 2}px`;
+    element.style.height = `${orbit.b * 2}px`;
+    element.style.left = `${center.x}px`;
+    element.style.top = `${center.y}px`;
+    element.style.transform = `translate(-50%, -50%) rotate(${orbit.tilt}deg)`;
+  });
+}
+
+function initPlanetOrbits() {
+  function draw(time) {
+    const cx = window.innerWidth * 0.5;
+    const cy = window.innerHeight * 0.55;
+
+    planetOrbitNodes.forEach(({ element, planet }) => {
+      const orbit = orbitDefinitions[planet.id];
+      const tilt = orbit.tilt * Math.PI / 180;
+      const start = orbit.start * Math.PI / 180;
+      const angle = start + (time / (orbit.duration * 3000)) * Math.PI * 2;
+      const cosAngle = Math.cos(angle);
+      const sinAngle = Math.sin(angle);
+      const x = cx + orbit.a * cosAngle * Math.cos(tilt) - orbit.b * sinAngle * Math.sin(tilt);
+      const y = cy + orbit.a * cosAngle * Math.sin(tilt) + orbit.b * sinAngle * Math.cos(tilt);
+      const scale = element.classList.contains("is-selected") ? " scale(1.34)" : "";
+      element.style.left = `${x}px`;
+      element.style.top = `${y}px`;
+      element.style.transform = `translate(-50%, -50%)${scale}`;
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  updateOrbitPaths();
+  window.addEventListener("resize", updateOrbitPaths);
+  requestAnimationFrame(draw);
 }
 
 function openPlanet(id) {
@@ -622,4 +682,5 @@ function initGravityGame() {
 }
 
 renderNavigation();
+initPlanetOrbits();
 initStarField();

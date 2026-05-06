@@ -190,109 +190,22 @@ body.map-zoom .orbit.is-selected {
 
 .orbit {
   position: absolute;
-  top: var(--planet-y);
-  left: var(--planet-x);
+  z-index: 2;
   width: var(--planet-size);
   height: var(--planet-size);
   border: 0;
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
-  animation: solar-orbit var(--orbit-duration, 44s) linear infinite;
   transition: filter 260ms ease, opacity 260ms ease, transform 360ms ease;
 }
 
-.orbit[data-planet="about"] {
-  animation: none;
-}
-
-.orbit:not([data-planet="about"]) {
-  top: 55%;
-  left: 50%;
-}
-
-.orbit[data-planet="education"] {
-  --orbit-duration: 52s;
-  --p0x: 9vw; --p0y: -36vh;
-  --p1x: 28vw; --p1y: -28vh;
-  --p2x: 38vw; --p2y: -4vh;
-  --p3x: 30vw; --p3y: 20vh;
-  --p4x: 4vw; --p4y: 32vh;
-  --p5x: -24vw; --p5y: 24vh;
-  --p6x: -35vw; --p6y: -1vh;
-  --p7x: -22vw; --p7y: -25vh;
-}
-
-.orbit[data-planet="projects"] {
-  --orbit-duration: 44s;
-  --p0x: 35vw; --p0y: -9vh;
-  --p1x: 38vw; --p1y: 14vh;
-  --p2x: 22vw; --p2y: 34vh;
-  --p3x: -6vw; --p3y: 36vh;
-  --p4x: -32vw; --p4y: 15vh;
-  --p5x: -36vw; --p5y: -11vh;
-  --p6x: -16vw; --p6y: -31vh;
-  --p7x: 16vw; --p7y: -30vh;
-}
-
-.orbit[data-planet="community"] {
-  --orbit-duration: 57s;
-  --p0x: -15vw; --p0y: 25vh;
-  --p1x: -34vw; --p1y: 17vh;
-  --p2x: -37vw; --p2y: -6vh;
-  --p3x: -21vw; --p3y: -28vh;
-  --p4x: 8vw; --p4y: -31vh;
-  --p5x: 30vw; --p5y: -15vh;
-  --p6x: 33vw; --p6y: 8vh;
-  --p7x: 15vw; --p7y: 27vh;
-}
-
-.orbit[data-planet="beyond"] {
-  --orbit-duration: 64s;
-  --p0x: 26vw; --p0y: 25vh;
-  --p1x: 8vw; --p1y: 35vh;
-  --p2x: -20vw; --p2y: 28vh;
-  --p3x: -33vw; --p3y: 5vh;
-  --p4x: -24vw; --p4y: -22vh;
-  --p5x: 2vw; --p5y: -34vh;
-  --p6x: 29vw; --p6y: -22vh;
-  --p7x: 38vw; --p7y: 2vh;
-}
-
-.orbit[data-planet="probability"] {
-  --orbit-duration: 36s;
-  --p0x: -34vw; --p0y: 6vh;
-  --p1x: -26vw; --p1y: -15vh;
-  --p2x: -4vw; --p2y: -26vh;
-  --p3x: 22vw; --p3y: -20vh;
-  --p4x: 34vw; --p4y: 0vh;
-  --p5x: 24vw; --p5y: 21vh;
-  --p6x: 2vw; --p6y: 28vh;
-  --p7x: -24vw; --p7y: 21vh;
-}
-
-.orbit[data-planet="gravity"] {
-  --orbit-duration: 48s;
-  --p0x: -4vw; --p0y: -35vh;
-  --p1x: 24vw; --p1y: -30vh;
-  --p2x: 37vw; --p2y: -9vh;
-  --p3x: 29vw; --p3y: 16vh;
-  --p4x: 5vw; --p4y: 29vh;
-  --p5x: -23vw; --p5y: 23vh;
-  --p6x: -36vw; --p6y: 2vh;
-  --p7x: -28vw; --p7y: -23vh;
-}
-
-.orbit[data-planet="contact"] {
-  --orbit-duration: 31s;
-  --p0x: 4vw; --p0y: 32vh;
-  --p1x: -19vw; --p1y: 25vh;
-  --p2x: -30vw; --p2y: 5vh;
-  --p3x: -22vw; --p3y: -15vh;
-  --p4x: -2vw; --p4y: -24vh;
-  --p5x: 20vw; --p5y: -18vh;
-  --p6x: 30vw; --p6y: 3vh;
-  --p7x: 22vw; --p7y: 25vh;
+.orbit-path {
+  position: absolute;
+  z-index: 1;
+  border: 1px solid rgba(210, 226, 236, 0.18);
+  border-radius: 50%;
+  pointer-events: none;
 }
 
 .orbit::before,
@@ -480,34 +393,6 @@ body.map-zoom .orbit.is-selected {
     radial-gradient(circle at 30% 24%, rgba(255,255,255,0.36), transparent 15%),
     radial-gradient(circle at 54% 54%, #aaa9a5 0 18%, #62666a 50%, #17191d 86%),
     linear-gradient(125deg, transparent 27%, rgba(255,255,255,0.1), transparent 36%);
-}
-
-@keyframes solar-orbit {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) translate3d(var(--p0x), var(--p0y), 0);
-  }
-  12.5% {
-    transform: translate(-50%, -50%) translate3d(var(--p1x), var(--p1y), 0);
-  }
-  25% {
-    transform: translate(-50%, -50%) translate3d(var(--p2x), var(--p2y), 0);
-  }
-  37.5% {
-    transform: translate(-50%, -50%) translate3d(var(--p3x), var(--p3y), 0);
-  }
-  50% {
-    transform: translate(-50%, -50%) translate3d(var(--p4x), var(--p4y), 0);
-  }
-  62.5% {
-    transform: translate(-50%, -50%) translate3d(var(--p5x), var(--p5y), 0);
-  }
-  75% {
-    transform: translate(-50%, -50%) translate3d(var(--p6x), var(--p6y), 0);
-  }
-  87.5% {
-    transform: translate(-50%, -50%) translate3d(var(--p7x), var(--p7y), 0);
-  }
 }
 
 .mobile-planets {
