@@ -1,11 +1,9 @@
 const planets = [
-  { id: "about", name: "About", color: "#4a9eff", size: 82, speed: 25, x: 50, y: 55 },
+  { id: "about", name: "About", color: "#6b8cae", size: 82, speed: 25, x: 50, y: 55 },
   { id: "education", name: "Education", color: "#a9823b", size: 75, speed: 35, x: 61, y: 20 },
   { id: "projects", name: "Projects", color: "#357f76", size: 70, speed: 45, x: 84, y: 47 },
   { id: "community", name: "Community", color: "#496f49", size: 60, speed: 30, x: 34, y: 73 },
   { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 65, speed: 55, x: 75, y: 78 },
-  { id: "probability", name: "Probability Game", color: "#9a4125", size: 55, speed: 20, x: 14, y: 61 },
-  { id: "gravity", name: "Gravity Puzzle", color: "#5e98af", size: 60, speed: 65, x: 45, y: 15 },
   { id: "contact", name: "Contact", color: "#b9b9b5", size: 50, speed: 15, x: 54, y: 88 }
 ];
 
@@ -15,9 +13,13 @@ const orbitDefinitions = {
   projects: { radius: "32vw", tilt: 15, start: 200, duration: 80 },
   community: { radius: "22vw", tilt: -20, start: 280, duration: 55 },
   beyond: { radius: "45vw", tilt: 35, start: 320, duration: 90 },
-  probability: { radius: "26vw", tilt: -45, start: 160, duration: 45 },
-  gravity: { radius: "42vw", tilt: 25, start: 240, duration: 75 },
   contact: { radius: "20vw", tilt: -15, start: 80, duration: 60 }
+};
+
+const panelTargets = {
+  void: { id: "void", color: "#111111" },
+  probability: { id: "probability", color: "#9a4125" },
+  gravity: { id: "gravity", color: "#5e98af" }
 };
 
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
@@ -150,6 +152,24 @@ const contentRenderers = {
         </div>
       </div>
     </section>
+  `,
+  void: () => `
+    <section class="panel-section">
+      <p class="eyebrow">The Void</p>
+      <h2 class="game-title">Choose a gravity well</h2>
+      <div class="project-grid">
+        <button class="void-game-card" type="button" data-void-game="probability">
+          <span class="meta">Minigame</span>
+          <strong>Probability Planet</strong>
+          <span>Test your statistical intuition with higher-or-lower cards.</span>
+        </button>
+        <button class="void-game-card" type="button" data-void-game="gravity">
+          <span class="meta">Minigame</span>
+          <strong>Gravity Puzzle</strong>
+          <span>Navigate through gravitational fields with limited fuel.</span>
+        </button>
+      </div>
+    </section>
   `
 };
 
@@ -241,17 +261,26 @@ function renderNavigation() {
 
   const star = document.createElement("div");
   star.className = "sun";
-  star.style.setProperty("--planet-color", planets[0].color);
+  star.style.setProperty("--planet-color", "#4a9eff");
   star.style.setProperty("--planet-size", `${planets[0].size}px`);
 
   const core = document.createElement("div");
   core.className = "planet-button";
-  core.dataset.planet = "about";
+  core.dataset.planet = "eduardo";
   core.dataset.label = "Eduardo";
   core.dataset.mapLabel = "E D U A R D O";
   core.setAttribute("aria-hidden", "true");
   star.appendChild(core);
   orbitsEl.appendChild(star);
+
+  const voidNode = document.createElement("button");
+  voidNode.className = "void-node";
+  voidNode.type = "button";
+  voidNode.dataset.mapLabel = "T H E   V O I D";
+  voidNode.setAttribute("aria-label", "Open The Void");
+  voidNode.addEventListener("click", () => openPlanet("void"));
+  voidNode.innerHTML = `<span class="void-disk" aria-hidden="true"></span>`;
+  document.body.appendChild(voidNode);
 }
 
 function updateOrbitPaths() {
@@ -286,12 +315,12 @@ function initPlanetOrbits() {
 }
 
 function openPlanet(id) {
-  const planet = planets.find((item) => item.id === id);
-  if (!planet) return;
+  const panelTarget = planets.find((item) => item.id === id) || panelTargets[id];
+  if (!panelTarget) return;
   window.clearTimeout(zoomTimer);
   activePlanet = id;
   panelContentEl.innerHTML = contentRenderers[id]();
-  panelOrbEl.style.setProperty("--active-color", planet.color);
+  panelOrbEl.style.setProperty("--active-color", panelTarget.color);
   document.querySelectorAll(".orbit").forEach((orbit) => {
     orbit.classList.toggle("is-selected", orbit.dataset.planet === id);
   });
@@ -304,6 +333,7 @@ function openPlanet(id) {
     staggerChildren();
     closePanelEl.focus({ preventScroll: true });
 
+    if (id === "void") initVoidPanel();
     if (id === "probability") initProbabilityGame();
     if (id === "gravity") initGravityGame();
   }, 260);
@@ -327,6 +357,12 @@ function closePlanet() {
 function staggerChildren() {
   [...panelContentEl.querySelectorAll(".panel-section > *")].forEach((child, index) => {
     child.style.setProperty("--stagger", index);
+  });
+}
+
+function initVoidPanel() {
+  panelContentEl.querySelectorAll("[data-void-game]").forEach((card) => {
+    card.addEventListener("click", () => openPlanet(card.dataset.voidGame));
   });
 }
 
