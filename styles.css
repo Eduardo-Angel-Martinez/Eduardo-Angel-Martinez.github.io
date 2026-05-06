@@ -240,7 +240,7 @@ body.map-zoom .orbit.is-selected {
   cursor: pointer;
   pointer-events: auto;
   transform: translateZ(0);
-  animation: planet-breathe 4.8s ease-in-out infinite;
+  animation: planet-breathe var(--drift-duration, 32s) ease-in-out infinite;
   background-color: var(--planet-color);
   background:
     radial-gradient(circle at 30% 22%, rgba(225, 230, 230, 0.35), transparent 14%),
@@ -333,6 +333,9 @@ body.map-zoom .orbit.is-selected {
 }
 
 .planet-button[data-planet="about"] {
+  --drift-duration: 45s;
+  --drift-x: 22px;
+  --drift-y: 18px;
   background:
     radial-gradient(circle at 30% 21%, rgba(255, 218, 150, 0.38), transparent 15%),
     radial-gradient(circle at 38% 48%, #a36c3d 0 16%, #4d2e1d 48%, #100b08 84%),
@@ -341,6 +344,9 @@ body.map-zoom .orbit.is-selected {
 }
 
 .planet-button[data-planet="education"] {
+  --drift-duration: 34s;
+  --drift-x: 38px;
+  --drift-y: 28px;
   background:
     radial-gradient(circle at 34% 22%, rgba(228, 190, 108, 0.36), transparent 15%),
     radial-gradient(circle at 52% 52%, #8a672f 0 20%, #563317 52%, #120906 86%),
@@ -348,6 +354,9 @@ body.map-zoom .orbit.is-selected {
 }
 
 .planet-button[data-planet="projects"] {
+  --drift-duration: 27s;
+  --drift-x: 44px;
+  --drift-y: 30px;
   background:
     radial-gradient(circle at 34% 24%, rgba(112, 210, 194, 0.32), transparent 14%),
     radial-gradient(circle at 56% 54%, #2f7770 0 20%, #164341 50%, #041313 86%),
@@ -355,6 +364,9 @@ body.map-zoom .orbit.is-selected {
 }
 
 .planet-button[data-planet="community"] {
+  --drift-duration: 31s;
+  --drift-x: 34px;
+  --drift-y: 24px;
   background:
     radial-gradient(circle at 32% 22%, rgba(170, 212, 154, 0.3), transparent 16%),
     radial-gradient(circle at 50% 54%, #496f49 0 18%, #274228 48%, #061008 84%),
@@ -362,6 +374,9 @@ body.map-zoom .orbit.is-selected {
 }
 
 .planet-button[data-planet="beyond"] {
+  --drift-duration: 39s;
+  --drift-x: 42px;
+  --drift-y: 26px;
   background:
     radial-gradient(circle at 30% 22%, rgba(190, 164, 220, 0.34), transparent 15%),
     radial-gradient(circle at 54% 52%, #5d4a7f 0 19%, #35234f 50%, #0f0618 86%),
@@ -369,6 +384,9 @@ body.map-zoom .orbit.is-selected {
 }
 
 .planet-button[data-planet="probability"] {
+  --drift-duration: 23s;
+  --drift-x: 30px;
+  --drift-y: 22px;
   background:
     radial-gradient(circle at 32% 22%, rgba(215, 122, 77, 0.34), transparent 14%),
     radial-gradient(circle at 52% 54%, #80371f 0 18%, #4b1a12 49%, #100403 86%),
@@ -376,6 +394,9 @@ body.map-zoom .orbit.is-selected {
 }
 
 .planet-button[data-planet="gravity"] {
+  --drift-duration: 36s;
+  --drift-x: 36px;
+  --drift-y: 30px;
   background:
     radial-gradient(circle at 28% 20%, rgba(220, 244, 249, 0.38), transparent 15%),
     radial-gradient(circle at 52% 54%, #5d93a8 0 18%, #31566b 48%, #0b1d2d 86%),
@@ -383,6 +404,9 @@ body.map-zoom .orbit.is-selected {
 }
 
 .planet-button[data-planet="contact"] {
+  --drift-duration: 29s;
+  --drift-x: 28px;
+  --drift-y: 20px;
   background:
     radial-gradient(circle at 30% 24%, rgba(255,255,255,0.36), transparent 15%),
     radial-gradient(circle at 54% 54%, #aaa9a5 0 18%, #62666a 50%, #17191d 86%),
@@ -390,11 +414,18 @@ body.map-zoom .orbit.is-selected {
 }
 
 @keyframes planet-breathe {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateZ(0) scale(1);
   }
+  25% {
+    transform: translate3d(var(--drift-x), calc(var(--drift-y) * 0.45), 0) scale(1.012);
+  }
   50% {
-    transform: translateZ(0) scale(1.035);
+    transform: translate3d(calc(var(--drift-x) * 0.18), var(--drift-y), 0) scale(1.024);
+  }
+  75% {
+    transform: translate3d(calc(var(--drift-x) * -0.72), calc(var(--drift-y) * -0.52), 0) scale(1.01);
   }
 }
 
