@@ -1,5 +1,5 @@
 const planets = [
-  { id: "about", name: "About", mapLabel: "A B O U T", color: "#4a9eff", size: 82, speed: 50, x: 50, y: 55 },
+  { id: "about", name: "About", mapLabel: "E D U A R D O", color: "#4a9eff", size: 82, speed: 25, x: 50, y: 55 },
   { id: "education", name: "Education", color: "#a9823b", size: 75, speed: 35, x: 61, y: 20 },
   { id: "projects", name: "Projects", color: "#357f76", size: 70, speed: 45, x: 84, y: 47 },
   { id: "community", name: "Community", color: "#496f49", size: 60, speed: 30, x: 34, y: 73 },
@@ -10,7 +10,7 @@ const planets = [
 ];
 
 const orbitDefinitions = {
-  about: { a: 400, b: 200, tilt: 15, start: 45, duration: 50 },
+  about: { a: 700, b: 300, tilt: 15, start: 45, duration: 50 },
   education: { a: 950, b: 450, tilt: -20, start: 120, duration: 65 },
   projects: { a: 1125, b: 500, tilt: 35, start: 200, duration: 80 },
   community: { a: 800, b: 625, tilt: -35, start: 280, duration: 55 },
@@ -181,7 +181,6 @@ let gravityGame = null;
 let zoomTimer = null;
 let planetOrbitNodes = [];
 let orbitPathNodes = [];
-let eduardoStarEl = null;
 
 function renderNavigation() {
   planets.forEach((planet) => {
@@ -221,111 +220,32 @@ function renderNavigation() {
     mobileGridEl.appendChild(card);
   });
 
-  eduardoStarEl = document.createElement("div");
-  eduardoStarEl.className = "sun";
-  eduardoStarEl.style.display = "block";
-  eduardoStarEl.style.position = "absolute";
-  eduardoStarEl.style.zIndex = "3";
-  eduardoStarEl.style.width = `${planets[0].size}px`;
-  eduardoStarEl.style.height = `${planets[0].size}px`;
-  eduardoStarEl.style.setProperty("--planet-color", planets[0].color);
-  eduardoStarEl.style.setProperty("--planet-size", `${planets[0].size}px`);
-
-  const button = document.createElement("button");
-  button.className = "planet-button";
-  button.type = "button";
-  button.dataset.planet = "about";
-  button.dataset.label = "About";
-  button.dataset.mapLabel = "E D U A R D O";
-  button.setAttribute("aria-label", "Open About");
-  button.addEventListener("click", () => openPlanet("about"));
-  eduardoStarEl.appendChild(button);
-  orbitsEl.appendChild(eduardoStarEl);
+  const centerNode = document.querySelector(".sun");
+  if (centerNode) centerNode.addEventListener("click", () => openPlanet("about"));
 }
 
 function updateOrbitPaths() {
   const center = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.55 };
-  const eduardoCenter = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.5 };
 
   orbitPathNodes.forEach(({ element, orbit }) => {
-    const pathCenter = element.dataset.planet === "about" ? eduardoCenter : center;
     element.style.width = `${orbit.a * 2}px`;
     element.style.height = `${orbit.b * 2}px`;
-    element.style.left = `${pathCenter.x}px`;
-    element.style.top = `${pathCenter.y}px`;
+    element.style.left = `${center.x}px`;
+    element.style.top = `${center.y}px`;
     element.style.transform = `translate(-50%, -50%) rotate(${orbit.tilt}deg)`;
   });
-}
-
-function getOrbitPosition(cx, cy, orbit, angle) {
-  const tilt = orbit.tilt * Math.PI / 180;
-  const cosAngle = Math.cos(angle);
-  const sinAngle = Math.sin(angle);
-
-  return {
-    x: cx + orbit.a * cosAngle * Math.cos(tilt) - orbit.b * sinAngle * Math.sin(tilt),
-    y: cy + orbit.a * cosAngle * Math.sin(tilt) + orbit.b * sinAngle * Math.cos(tilt)
-  };
-}
-
-function isAboutGroupVisible(position, planet) {
-  const horizontalMargin = planet.size / 2 + 40;
-  const topMargin = planet.size / 2 + 40;
-  const bottomMargin = planet.size / 2 + 62;
-
-  return (
-    position.x >= horizontalMargin &&
-    position.x <= window.innerWidth - horizontalMargin &&
-    position.y >= topMargin &&
-    position.y <= window.innerHeight - bottomMargin
-  );
-}
-
-function getVisibleAboutPosition(cx, cy, orbit, planet, angle) {
-  const step = Math.PI / 180;
-  let position = getOrbitPosition(cx, cy, orbit, angle);
-
-  for (let i = 0; i < 360 && !isAboutGroupVisible(position, planet); i += 1) {
-    angle += step;
-    position = getOrbitPosition(cx, cy, orbit, angle);
-  }
-
-  if (isAboutGroupVisible(position, planet)) {
-    return position;
-  }
-
-  const horizontalMargin = planet.size / 2 + 40;
-  const topMargin = planet.size / 2 + 40;
-  const bottomMargin = planet.size / 2 + 62;
-
-  return {
-    x: Math.min(Math.max(position.x, horizontalMargin), window.innerWidth - horizontalMargin),
-    y: Math.min(Math.max(position.y, topMargin), window.innerHeight - bottomMargin)
-  };
 }
 
 function initPlanetOrbits() {
   function draw(time) {
     const cx = window.innerWidth * 0.5;
     const cy = window.innerHeight * 0.55;
-    const eduardoX = window.innerWidth * 0.5;
-    const eduardoY = window.innerHeight * 0.5;
-
-    if (eduardoStarEl) {
-      eduardoStarEl.style.left = `${eduardoX}px`;
-      eduardoStarEl.style.top = `${eduardoY}px`;
-      eduardoStarEl.style.transform = "translate(-50%, -50%)";
-    }
 
     planetOrbitNodes.forEach(({ element, planet }) => {
       if (planet.id === "about") {
-        const orbit = orbitDefinitions[planet.id];
-        const start = orbit.start * Math.PI / 180;
-        const angle = start + (time / (orbit.duration * 3000)) * Math.PI * 2;
-        const { x, y } = getVisibleAboutPosition(eduardoX, eduardoY, orbit, planet, angle);
         const scale = element.classList.contains("is-selected") ? " scale(1.34)" : "";
-        element.style.left = `${x}px`;
-        element.style.top = `${y}px`;
+        element.style.left = `${cx}px`;
+        element.style.top = `${cy}px`;
         element.style.transform = `translate(-50%, -50%)${scale}`;
         return;
       }
