@@ -1,5 +1,5 @@
 const planets = [
-  { id: "about", name: "About", mapLabel: "E D U A R D O", color: "#b9824b", size: 65, speed: 25, x: 16, y: 19 },
+  { id: "about", name: "About", mapLabel: "E D U A R D O", color: "#b9824b", size: 65, speed: 25, x: 50, y: 55 },
   { id: "education", name: "Education", color: "#a9823b", size: 75, speed: 35, x: 61, y: 20 },
   { id: "projects", name: "Projects", color: "#357f76", size: 70, speed: 45, x: 84, y: 47 },
   { id: "community", name: "Community", color: "#496f49", size: 60, speed: 30, x: 34, y: 73 },
