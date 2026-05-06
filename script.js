@@ -10,14 +10,14 @@ const planets = [
 ];
 
 const orbitDefinitions = {
-  about: { a: 700, b: 300, tilt: 15, start: 45, duration: 50 },
-  education: { a: 950, b: 450, tilt: -20, start: 120, duration: 65 },
-  projects: { a: 1125, b: 500, tilt: 35, start: 200, duration: 80 },
-  community: { a: 800, b: 625, tilt: -35, start: 280, duration: 55 },
-  beyond: { a: 1250, b: 400, tilt: 10, start: 320, duration: 90 },
-  probability: { a: 650, b: 550, tilt: 50, start: 160, duration: 45 },
-  gravity: { a: 1050, b: 750, tilt: -15, start: 240, duration: 75 },
-  contact: { a: 875, b: 325, tilt: 25, start: 80, duration: 60 }
+  about: { a: 560, b: 240, tilt: 15, start: 45, duration: 50 },
+  education: { a: 760, b: 360, tilt: -20, start: 120, duration: 65 },
+  projects: { a: 900, b: 400, tilt: 35, start: 200, duration: 80 },
+  community: { a: 640, b: 500, tilt: -35, start: 280, duration: 55 },
+  beyond: { a: 1000, b: 320, tilt: 10, start: 320, duration: 90 },
+  probability: { a: 520, b: 440, tilt: 50, start: 160, duration: 45 },
+  gravity: { a: 840, b: 600, tilt: -15, start: 240, duration: 75 },
+  contact: { a: 700, b: 260, tilt: 25, start: 80, duration: 60 }
 };
 
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
@@ -236,28 +236,58 @@ function updateOrbitPaths() {
   });
 }
 
+function getOrbitPosition(cx, cy, orbit, angle) {
+  const tilt = orbit.tilt * Math.PI / 180;
+  const cosAngle = Math.cos(angle);
+  const sinAngle = Math.sin(angle);
+
+  return {
+    x: cx + orbit.a * cosAngle * Math.cos(tilt) - orbit.b * sinAngle * Math.sin(tilt),
+    y: cy + orbit.a * cosAngle * Math.sin(tilt) + orbit.b * sinAngle * Math.cos(tilt)
+  };
+}
+
+function isOrbitPositionVisible(position, size) {
+  const margin = size / 2;
+
+  return (
+    position.x >= -margin &&
+    position.x <= window.innerWidth + margin &&
+    position.y >= -margin &&
+    position.y <= window.innerHeight + margin
+  );
+}
+
+function getVisibleOrbitPosition(cx, cy, orbit, planet, angle) {
+  const step = Math.PI / 180;
+  let position = getOrbitPosition(cx, cy, orbit, angle);
+
+  for (let i = 0; i < 360 && !isOrbitPositionVisible(position, planet.size); i += 1) {
+    angle += step;
+    position = getOrbitPosition(cx, cy, orbit, angle);
+  }
+
+  if (isOrbitPositionVisible(position, planet.size)) {
+    return position;
+  }
+
+  const margin = planet.size / 2;
+  return {
+    x: Math.min(Math.max(position.x, -margin), window.innerWidth + margin),
+    y: Math.min(Math.max(position.y, -margin), window.innerHeight + margin)
+  };
+}
+
 function initPlanetOrbits() {
   function draw(time) {
     const cx = window.innerWidth * 0.5;
     const cy = window.innerHeight * 0.55;
 
     planetOrbitNodes.forEach(({ element, planet }) => {
-      if (planet.id === "about") {
-        const scale = element.classList.contains("is-selected") ? " scale(1.34)" : "";
-        element.style.left = `${cx}px`;
-        element.style.top = `${cy}px`;
-        element.style.transform = `translate(-50%, -50%)${scale}`;
-        return;
-      }
-
       const orbit = orbitDefinitions[planet.id];
-      const tilt = orbit.tilt * Math.PI / 180;
       const start = orbit.start * Math.PI / 180;
       const angle = start + (time / (orbit.duration * 3000)) * Math.PI * 2;
-      const cosAngle = Math.cos(angle);
-      const sinAngle = Math.sin(angle);
-      const x = cx + orbit.a * cosAngle * Math.cos(tilt) - orbit.b * sinAngle * Math.sin(tilt);
-      const y = cy + orbit.a * cosAngle * Math.sin(tilt) + orbit.b * sinAngle * Math.cos(tilt);
+      const { x, y } = getVisibleOrbitPosition(cx, cy, orbit, planet, angle);
       const scale = element.classList.contains("is-selected") ? " scale(1.34)" : "";
       element.style.left = `${x}px`;
       element.style.top = `${y}px`;
