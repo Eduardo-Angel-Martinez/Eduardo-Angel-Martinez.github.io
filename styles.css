@@ -28,9 +28,10 @@ body {
   color: var(--text);
   font-family: var(--sans);
   background:
-    radial-gradient(circle at 23% 24%, rgba(74, 54, 122, 0.14), transparent 35%),
-    radial-gradient(circle at 78% 70%, rgba(30, 81, 127, 0.12), transparent 38%),
-    radial-gradient(circle at center, rgba(255, 255, 255, 0.04), transparent 24%),
+    radial-gradient(circle at 18% 24%, rgba(83, 32, 118, 0.34), transparent 34%),
+    radial-gradient(circle at 78% 18%, rgba(25, 75, 140, 0.3), transparent 38%),
+    radial-gradient(circle at 68% 72%, rgba(129, 31, 44, 0.22), transparent 32%),
+    radial-gradient(circle at 42% 48%, rgba(27, 22, 66, 0.42), transparent 44%),
     var(--bg);
 }
 
@@ -69,18 +70,16 @@ body.panel-open .site-shell {
 }
 
 .solar-stage {
+  position: relative;
   display: grid;
   min-height: 100vh;
+  overflow: hidden;
   place-items: center;
   padding: 32px;
 }
 
 .solar-copy {
-  position: fixed;
-  top: 28px;
-  left: 32px;
-  max-width: min(420px, 40vw);
-  pointer-events: none;
+  display: none;
 }
 
 .solar-copy p,
@@ -111,10 +110,10 @@ body.panel-open .site-shell {
 }
 
 .system {
-  position: relative;
-  width: min(82vw, 920px);
-  aspect-ratio: 1;
-  max-height: min(86vh, 920px);
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   transition: transform 460ms ease;
 }
 
@@ -124,96 +123,186 @@ body.panel-open .site-shell {
   left: 50%;
   z-index: 4;
   display: grid;
-  width: clamp(86px, 11vw, 132px);
-  aspect-ratio: 1;
+  width: min(760px, 76vw);
+  min-height: 150px;
   place-items: center;
   border: 0;
-  border-radius: 50%;
-  color: #2b1907;
+  color: rgba(240, 237, 232, 0.94);
   cursor: pointer;
   transform: translate(-50%, -50%);
-  background:
-    radial-gradient(circle at 35% 30%, #fff7cf, #f0c060 38%, #c4522a 72%, #5b1d12 100%);
-  box-shadow:
-    0 0 28px rgba(240, 192, 96, 0.72),
-    0 0 80px rgba(196, 82, 42, 0.38),
-    0 0 150px rgba(240, 192, 96, 0.18);
+  background: transparent;
+  text-shadow:
+    0 0 18px rgba(240, 237, 232, 0.38),
+    0 0 48px rgba(122, 184, 212, 0.28),
+    0 0 92px rgba(139, 111, 181, 0.2);
+  opacity: 0.96;
 }
 
 .sun span {
   font-family: var(--serif);
-  font-size: clamp(2rem, 4vw, 3.7rem);
-  line-height: 1;
+  font-size: clamp(3.5rem, 9vw, 8.5rem);
+  font-style: italic;
+  line-height: 0.9;
+  text-align: center;
 }
 
 .orbits {
   position: absolute;
   inset: 0;
+  z-index: 5;
 }
 
 .orbit {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--orbit-size);
-  height: var(--orbit-size);
-  border: 1px solid rgba(255, 255, 255, 0.13);
+  top: var(--planet-y);
+  left: var(--planet-x);
+  width: var(--planet-size);
+  height: var(--planet-size);
+  border: 0;
   border-radius: 50%;
   pointer-events: none;
-  transform: translate(-50%, -50%) rotate(var(--planet-angle));
+  transform: translate(-50%, -50%);
 }
 
 .planet-button {
   position: absolute;
-  top: 50%;
-  left: 100%;
+  inset: 0;
   display: grid;
-  width: var(--planet-size);
+  width: 100%;
   aspect-ratio: 1;
   place-items: center;
   border: 0;
   border-radius: 50%;
   cursor: pointer;
   pointer-events: auto;
-  transform: translate(-50%, -50%) rotate(var(--planet-counter-angle));
+  transform: translateZ(0);
+  animation: planet-breathe 4.8s ease-in-out infinite;
   background-color: var(--planet-color);
   background:
-    radial-gradient(circle at 32% 28%, rgba(255,255,255,0.75), transparent 22%),
-    radial-gradient(circle at center, var(--planet-color), color-mix(in srgb, var(--planet-color), #000 58%));
-  box-shadow: 0 0 15px color-mix(in srgb, var(--planet-color), transparent 45%);
+    radial-gradient(circle at 32% 24%, rgba(255,255,255,0.82), transparent 15%),
+    radial-gradient(circle at 68% 76%, rgba(0,0,0,0.55), transparent 42%),
+    radial-gradient(circle at 44% 48%, var(--planet-color), color-mix(in srgb, var(--planet-color), #000 68%) 76%);
+  box-shadow:
+    inset -16px -20px 30px rgba(0, 0, 0, 0.42),
+    inset 10px 8px 18px rgba(255, 255, 255, 0.12),
+    0 0 24px color-mix(in srgb, var(--planet-color), transparent 26%),
+    0 0 68px color-mix(in srgb, var(--planet-color), transparent 66%);
+}
+
+.planet-button::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  content: "";
+  opacity: 0.58;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle at 28% 38%, rgba(255,255,255,0.16) 0 2px, transparent 3px 100%),
+    radial-gradient(circle at 61% 30%, rgba(255,255,255,0.12) 0 1px, transparent 2px 100%),
+    radial-gradient(circle at 52% 68%, rgba(0,0,0,0.28) 0 3px, transparent 5px 100%),
+    linear-gradient(130deg, transparent 20%, rgba(255,255,255,0.14), transparent 42%),
+    repeating-radial-gradient(circle at 48% 52%, rgba(255,255,255,0.05) 0 1px, transparent 1px 7px);
 }
 
 .planet-button::after {
   position: absolute;
-  bottom: calc(100% + 12px);
+  top: calc(100% + 13px);
   left: 50%;
-  padding: 6px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
+  padding: 0;
+  border: 0;
   color: var(--text);
-  content: attr(data-label);
+  content: attr(data-map-label);
   font-family: var(--mono);
-  font-size: 0.72rem;
-  opacity: 0;
+  font-size: 0.66rem;
+  opacity: 0.78;
   pointer-events: none;
-  transform: translateX(-50%) translateY(4px);
+  text-transform: uppercase;
+  transform: translateX(-50%) translateY(0);
   transition: opacity 180ms ease, transform 180ms ease;
   white-space: nowrap;
-  background: rgba(10, 10, 15, 0.86);
+  background: transparent;
+  text-shadow: 0 0 14px rgba(240, 237, 232, 0.38);
 }
 
 .planet-button:hover,
 .planet-button:focus-visible {
   box-shadow:
-    0 0 22px color-mix(in srgb, var(--planet-color), transparent 10%),
-    0 0 44px color-mix(in srgb, var(--planet-color), transparent 42%);
+    inset -16px -20px 30px rgba(0, 0, 0, 0.42),
+    inset 10px 8px 18px rgba(255, 255, 255, 0.14),
+    0 0 34px color-mix(in srgb, var(--planet-color), transparent 8%),
+    0 0 92px color-mix(in srgb, var(--planet-color), transparent 46%);
   outline: 0;
 }
 
 .planet-button:hover::after,
 .planet-button:focus-visible::after {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateX(-50%) translateY(3px);
+}
+
+.planet-button[data-planet="about"] {
+  background:
+    radial-gradient(circle at 30% 20%, rgba(230, 250, 255, 0.78), transparent 15%),
+    radial-gradient(circle at 34% 46%, #89a9c0 0 18%, #324d68 45%, #081a2d 82%),
+    repeating-linear-gradient(38deg, rgba(255,255,255,0.08) 0 2px, transparent 2px 9px);
+}
+
+.planet-button[data-planet="education"] {
+  background:
+    radial-gradient(circle at 34% 22%, rgba(255, 236, 174, 0.74), transparent 16%),
+    radial-gradient(circle at 52% 52%, #d4a843 0 21%, #94531e 52%, #2d1609 86%),
+    repeating-linear-gradient(156deg, rgba(255,255,255,0.08) 0 1px, transparent 1px 8px);
+}
+
+.planet-button[data-planet="projects"] {
+  background:
+    radial-gradient(circle at 34% 24%, rgba(162, 255, 238, 0.76), transparent 14%),
+    radial-gradient(circle at 56% 54%, #58cabb 0 20%, #176f6b 50%, #052726 86%),
+    radial-gradient(circle at 70% 28%, rgba(106,255,221,0.3), transparent 20%);
+}
+
+.planet-button[data-planet="community"] {
+  background:
+    radial-gradient(circle at 32% 22%, rgba(202,255,180,0.72), transparent 16%),
+    radial-gradient(circle at 50% 54%, #72a56b 0 18%, #2e6535 48%, #061b0d 84%),
+    repeating-linear-gradient(24deg, rgba(255,255,255,0.07) 0 1px, transparent 1px 7px);
+}
+
+.planet-button[data-planet="beyond"] {
+  background:
+    radial-gradient(circle at 30% 22%, rgba(230, 204, 255, 0.82), transparent 15%),
+    radial-gradient(circle at 54% 52%, #a282d1 0 19%, #56347f 50%, #160924 86%),
+    linear-gradient(135deg, transparent 31%, rgba(255,255,255,0.18), transparent 38%);
+}
+
+.planet-button[data-planet="probability"] {
+  background:
+    radial-gradient(circle at 32% 22%, rgba(255, 204, 128, 0.8), transparent 14%),
+    radial-gradient(circle at 52% 54%, #d66a31 0 18%, #7e2416 49%, #210907 86%),
+    radial-gradient(circle at 72% 70%, rgba(255,93,46,0.36), transparent 24%);
+}
+
+.planet-button[data-planet="gravity"] {
+  background:
+    radial-gradient(circle at 28% 20%, rgba(255,255,255,0.9), transparent 15%),
+    radial-gradient(circle at 52% 54%, #a8ddf2 0 18%, #4d91b1 48%, #102f4a 86%),
+    repeating-linear-gradient(172deg, rgba(255,255,255,0.14) 0 3px, transparent 3px 13px);
+}
+
+.planet-button[data-planet="contact"] {
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255,255,255,0.92), transparent 15%),
+    radial-gradient(circle at 54% 54%, #f1f1ed 0 18%, #9c9f9f 50%, #27292d 86%),
+    linear-gradient(125deg, transparent 27%, rgba(255,255,255,0.2), transparent 36%);
+}
+
+@keyframes planet-breathe {
+  0%, 100% {
+    transform: translateZ(0) scale(1);
+  }
+  50% {
+    transform: translateZ(0) scale(1.035);
+  }
 }
 
 .mobile-planets {
@@ -277,12 +366,149 @@ body.panel-open .site-shell {
     rgba(10, 10, 15, 0.88);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.56);
   backdrop-filter: blur(18px);
+  isolation: isolate;
 }
 
 .planet-panel.is-open {
   opacity: 1;
   pointer-events: auto;
   transform: translate(-50%, -50%) scale(1);
+}
+
+.planet-panel::before,
+.planet-panel::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.planet-panel::before {
+  opacity: 0.92;
+}
+
+.planet-panel::after {
+  opacity: 0.42;
+  mix-blend-mode: screen;
+}
+
+.biome-about::before {
+  background:
+    linear-gradient(180deg, rgba(166, 219, 255, 0.16), transparent 34%),
+    radial-gradient(circle at 22% -10%, rgba(177, 229, 255, 0.32), transparent 34%),
+    radial-gradient(circle at 78% 82%, rgba(29, 71, 111, 0.62), transparent 46%),
+    linear-gradient(135deg, #051222, #0b2740 58%, #06101c);
+}
+
+.biome-about::after {
+  background:
+    linear-gradient(104deg, transparent 8%, rgba(220, 247, 255, 0.2), transparent 18%),
+    linear-gradient(126deg, transparent 42%, rgba(220, 247, 255, 0.18), transparent 52%),
+    repeating-linear-gradient(34deg, rgba(220,247,255,0.09) 0 1px, transparent 1px 12px);
+  animation: biome-shimmer 8s ease-in-out infinite;
+}
+
+.biome-education::before {
+  background:
+    radial-gradient(circle at 82% 14%, rgba(255, 198, 92, 0.3), transparent 28%),
+    linear-gradient(165deg, rgba(93, 45, 15, 0.88), rgba(180, 92, 30, 0.5) 44%, rgba(36, 17, 8, 0.94)),
+    repeating-linear-gradient(12deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 18px);
+}
+
+.biome-education::after {
+  background:
+    radial-gradient(circle at 16% 70%, rgba(240, 192, 96, 0.24) 0 1px, transparent 2px),
+    radial-gradient(circle at 64% 28%, rgba(240, 192, 96, 0.18) 0 1px, transparent 2px),
+    repeating-radial-gradient(circle at 40% 40%, rgba(255, 214, 132, 0.08) 0 1px, transparent 1px 14px);
+  animation: dust-drift 12s linear infinite;
+}
+
+.biome-projects::before {
+  background:
+    radial-gradient(circle at 22% 72%, rgba(28, 239, 205, 0.22), transparent 24%),
+    radial-gradient(circle at 78% 24%, rgba(71, 255, 222, 0.18), transparent 26%),
+    linear-gradient(145deg, #031917, #063c40 54%, #020b12);
+}
+
+.biome-projects::after {
+  background:
+    radial-gradient(circle at 18% 86%, rgba(122,255,224,0.48) 0 2px, transparent 3px),
+    radial-gradient(circle at 70% 76%, rgba(122,255,224,0.36) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 88% 28%, rgba(74,157,143,0.28), transparent 24%);
+  animation: float-up 7s ease-in-out infinite;
+}
+
+.biome-community::before {
+  background:
+    linear-gradient(180deg, rgba(197, 255, 184, 0.16), transparent 28%),
+    radial-gradient(circle at 42% 10%, rgba(138, 215, 117, 0.24), transparent 34%),
+    linear-gradient(150deg, #04150a, #174a25 56%, #06120a);
+}
+
+.biome-community::after {
+  background:
+    linear-gradient(0deg, rgba(229,255,225,0.2), transparent 36%),
+    radial-gradient(ellipse at 40% 100%, rgba(230,255,235,0.24), transparent 48%);
+  animation: mist-roll 9s ease-in-out infinite;
+}
+
+.biome-beyond::before {
+  background:
+    radial-gradient(circle at 20% 22%, rgba(188, 126, 255, 0.24), transparent 28%),
+    radial-gradient(circle at 78% 70%, rgba(111, 61, 180, 0.38), transparent 36%),
+    linear-gradient(135deg, #12051d, #321252 55%, #07020e);
+}
+
+.biome-beyond::after {
+  background:
+    radial-gradient(circle at 20% 40%, rgba(239,220,255,0.42) 0 3px, transparent 5px),
+    radial-gradient(circle at 74% 28%, rgba(239,220,255,0.3) 0 2px, transparent 4px),
+    linear-gradient(122deg, transparent 32%, rgba(255,255,255,0.18), transparent 39%);
+  animation: crystal-glow 8s ease-in-out infinite;
+}
+
+.biome-probability::before {
+  background:
+    radial-gradient(circle at 22% 84%, rgba(255, 84, 35, 0.38), transparent 30%),
+    radial-gradient(circle at 78% 76%, rgba(196, 82, 42, 0.32), transparent 34%),
+    linear-gradient(145deg, #180604, #5b1b12 56%, #0b0202);
+}
+
+.biome-probability::after {
+  background:
+    radial-gradient(circle at 18% 84%, rgba(255,170,81,0.5) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 72%, rgba(255,125,65,0.36) 0 2px, transparent 4px),
+    repeating-linear-gradient(91deg, transparent 0 12px, rgba(255, 118, 53, 0.1) 12px 14px);
+  animation: ember-rise 5s ease-in-out infinite;
+}
+
+.biome-gravity::before {
+  background:
+    linear-gradient(180deg, rgba(124, 218, 255, 0.28), transparent 30%),
+    radial-gradient(ellipse at 48% 18%, rgba(195, 246, 255, 0.26), transparent 36%),
+    linear-gradient(165deg, #dceff7, #5d9fc1 34%, #14344f 72%, #061526);
+}
+
+.biome-gravity::after {
+  background:
+    linear-gradient(92deg, transparent, rgba(255,255,255,0.26), transparent),
+    repeating-linear-gradient(176deg, rgba(255,255,255,0.13) 0 4px, transparent 4px 18px);
+  animation: cloud-slide 10s linear infinite;
+}
+
+.biome-contact::before {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.74), rgba(164, 174, 184, 0.32) 38%, rgba(10, 13, 18, 0.94)),
+    radial-gradient(circle at 82% 18%, rgba(255,255,255,0.36), transparent 24%);
+}
+
+.biome-contact::after {
+  background:
+    linear-gradient(rgba(255,255,255,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: 0.24;
 }
 
 .close-panel {
@@ -305,6 +531,7 @@ body.panel-open .site-shell {
   position: absolute;
   top: 24px;
   left: 28px;
+  z-index: 1;
   width: 74px;
   aspect-ratio: 1;
   border-radius: 50%;
@@ -334,6 +561,75 @@ body.panel-open .site-shell {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes biome-shimmer {
+  0%, 100% {
+    opacity: 0.28;
+    transform: translateX(-2%);
+  }
+  50% {
+    opacity: 0.52;
+    transform: translateX(2%);
+  }
+}
+
+@keyframes dust-drift {
+  from {
+    transform: translate3d(-2%, 2%, 0);
+  }
+  to {
+    transform: translate3d(3%, -4%, 0);
+  }
+}
+
+@keyframes float-up {
+  0%, 100% {
+    transform: translateY(10px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes mist-roll {
+  0%, 100% {
+    opacity: 0.28;
+    transform: translateX(-4%);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(4%);
+  }
+}
+
+@keyframes crystal-glow {
+  0%, 100% {
+    opacity: 0.32;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.56;
+    filter: brightness(1.35);
+  }
+}
+
+@keyframes ember-rise {
+  0% {
+    transform: translateY(18px);
+  }
+  100% {
+    transform: translateY(-28px);
+  }
+}
+
+@keyframes cloud-slide {
+  from {
+    transform: translateX(-8%);
+  }
+  to {
+    transform: translateX(8%);
   }
 }
 

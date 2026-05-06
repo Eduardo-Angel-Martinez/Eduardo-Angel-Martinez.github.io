@@ -1,12 +1,12 @@
 const planets = [
-  { id: "about", name: "About", color: "#6b8cae", size: 18, speed: 25, orbit: 24, angle: -28 },
-  { id: "education", name: "Education", color: "#d4a843", size: 24, speed: 35, orbit: 32, angle: 128 },
-  { id: "projects", name: "Projects", color: "#4a9d8f", size: 28, speed: 45, orbit: 40, angle: 22 },
-  { id: "community", name: "Community", color: "#5a8a5a", size: 16, speed: 30, orbit: 48, angle: 214 },
-  { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 22, speed: 55, orbit: 56, angle: 306 },
-  { id: "probability", name: "Probability Game", color: "#c4522a", size: 14, speed: 20, orbit: 64, angle: 166 },
-  { id: "gravity", name: "Gravity Puzzle", color: "#7ab8d4", size: 20, speed: 65, orbit: 72, angle: 72 },
-  { id: "contact", name: "Contact", color: "#e8e8e8", size: 12, speed: 15, orbit: 80, angle: 252 }
+  { id: "about", name: "About", color: "#6b8cae", size: 78, speed: 25, x: 21, y: 31 },
+  { id: "education", name: "Education", color: "#d4a843", size: 86, speed: 35, x: 64, y: 23 },
+  { id: "projects", name: "Projects", color: "#4a9d8f", size: 92, speed: 45, x: 82, y: 48 },
+  { id: "community", name: "Community", color: "#5a8a5a", size: 68, speed: 30, x: 34, y: 72 },
+  { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 82, speed: 55, x: 76, y: 78 },
+  { id: "probability", name: "Probability Game", color: "#c4522a", size: 66, speed: 20, x: 14, y: 62 },
+  { id: "gravity", name: "Gravity Puzzle", color: "#7ab8d4", size: 80, speed: 65, x: 48, y: 15 },
+  { id: "contact", name: "Contact", color: "#e8e8e8", size: 64, speed: 15, x: 55, y: 87 }
 ];
 
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
@@ -172,9 +172,8 @@ function renderNavigation() {
   planets.forEach((planet) => {
     const orbit = document.createElement("div");
     orbit.className = "orbit";
-    orbit.style.setProperty("--orbit-size", `${planet.orbit}%`);
-    orbit.style.setProperty("--planet-angle", `${planet.angle}deg`);
-    orbit.style.setProperty("--planet-counter-angle", `${-planet.angle}deg`);
+    orbit.style.setProperty("--planet-x", `${planet.x}%`);
+    orbit.style.setProperty("--planet-y", `${planet.y}%`);
     orbit.style.setProperty("--planet-color", planet.color);
     orbit.style.setProperty("--planet-size", `${planet.size}px`);
 
@@ -183,6 +182,7 @@ function renderNavigation() {
     button.type = "button";
     button.dataset.planet = planet.id;
     button.dataset.label = planet.name;
+    button.dataset.mapLabel = planet.name;
     button.setAttribute("aria-label", `Open ${planet.name}`);
     button.addEventListener("click", () => openPlanet(planet.id));
     orbit.appendChild(button);
@@ -207,6 +207,7 @@ function openPlanet(id) {
   activePlanet = id;
   panelContentEl.innerHTML = contentRenderers[id]();
   panelOrbEl.style.setProperty("--active-color", planet.color);
+  panelEl.className = `planet-panel is-open biome-${id}`;
   panelEl.classList.add("is-open");
   panelEl.setAttribute("aria-hidden", "false");
   document.body.classList.add("panel-open");
@@ -220,7 +221,7 @@ function openPlanet(id) {
 
 function closePlanet() {
   activePlanet = null;
-  panelEl.classList.remove("is-open");
+  panelEl.className = "planet-panel";
   panelEl.setAttribute("aria-hidden", "true");
   document.body.classList.remove("panel-open");
   document.body.style.overflow = "";
