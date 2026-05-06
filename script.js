@@ -1,12 +1,12 @@
 const planets = [
-  { id: "about", name: "About", color: "#6b8cae", size: 78, speed: 25, x: 21, y: 31 },
-  { id: "education", name: "Education", color: "#d4a843", size: 86, speed: 35, x: 64, y: 23 },
-  { id: "projects", name: "Projects", color: "#4a9d8f", size: 92, speed: 45, x: 82, y: 48 },
-  { id: "community", name: "Community", color: "#5a8a5a", size: 68, speed: 30, x: 34, y: 72 },
-  { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 82, speed: 55, x: 76, y: 78 },
-  { id: "probability", name: "Probability Game", color: "#c4522a", size: 66, speed: 20, x: 14, y: 62 },
-  { id: "gravity", name: "Gravity Puzzle", color: "#7ab8d4", size: 80, speed: 65, x: 48, y: 15 },
-  { id: "contact", name: "Contact", color: "#e8e8e8", size: 64, speed: 15, x: 55, y: 87 }
+  { id: "about", name: "About", color: "#6b8cae", size: 65, speed: 25, x: 21, y: 28 },
+  { id: "education", name: "Education", color: "#d4a843", size: 75, speed: 35, x: 61, y: 20 },
+  { id: "projects", name: "Projects", color: "#4a9d8f", size: 70, speed: 45, x: 83, y: 47 },
+  { id: "community", name: "Community", color: "#5a8a5a", size: 60, speed: 30, x: 34, y: 73 },
+  { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 65, speed: 55, x: 75, y: 78 },
+  { id: "probability", name: "Probability Game", color: "#c4522a", size: 55, speed: 20, x: 14, y: 61 },
+  { id: "gravity", name: "Gravity Puzzle", color: "#7ab8d4", size: 60, speed: 65, x: 45, y: 15 },
+  { id: "contact", name: "Contact", color: "#e8e8e8", size: 50, speed: 15, x: 54, y: 88 }
 ];
 
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
@@ -167,6 +167,7 @@ const closePanelEl = document.getElementById("close-panel");
 let activePlanet = null;
 let probabilityGame = null;
 let gravityGame = null;
+let zoomTimer = null;
 
 function renderNavigation() {
   planets.forEach((planet) => {
@@ -176,6 +177,7 @@ function renderNavigation() {
     orbit.style.setProperty("--planet-y", `${planet.y}%`);
     orbit.style.setProperty("--planet-color", planet.color);
     orbit.style.setProperty("--planet-size", `${planet.size}px`);
+    orbit.dataset.planet = planet.id;
 
     const button = document.createElement("button");
     button.className = "planet-button";
@@ -204,25 +206,34 @@ function renderNavigation() {
 function openPlanet(id) {
   const planet = planets.find((item) => item.id === id);
   if (!planet) return;
+  window.clearTimeout(zoomTimer);
   activePlanet = id;
   panelContentEl.innerHTML = contentRenderers[id]();
   panelOrbEl.style.setProperty("--active-color", planet.color);
-  panelEl.className = `planet-panel is-open biome-${id}`;
-  panelEl.classList.add("is-open");
-  panelEl.setAttribute("aria-hidden", "false");
-  document.body.classList.add("panel-open");
+  document.querySelectorAll(".orbit").forEach((orbit) => {
+    orbit.classList.toggle("is-selected", orbit.dataset.planet === id);
+  });
+  document.body.classList.add("map-zoom");
   document.body.style.overflow = "hidden";
-  staggerChildren();
-  closePanelEl.focus({ preventScroll: true });
+  zoomTimer = window.setTimeout(() => {
+    panelEl.className = `planet-panel is-open biome-${id}`;
+    panelEl.setAttribute("aria-hidden", "false");
+    document.body.classList.add("panel-open");
+    staggerChildren();
+    closePanelEl.focus({ preventScroll: true });
 
-  if (id === "probability") initProbabilityGame();
-  if (id === "gravity") initGravityGame();
+    if (id === "probability") initProbabilityGame();
+    if (id === "gravity") initGravityGame();
+  }, 260);
 }
 
 function closePlanet() {
+  window.clearTimeout(zoomTimer);
   activePlanet = null;
   panelEl.className = "planet-panel";
   panelEl.setAttribute("aria-hidden", "true");
+  document.querySelectorAll(".orbit").forEach((orbit) => orbit.classList.remove("is-selected"));
+  document.body.classList.remove("map-zoom");
   document.body.classList.remove("panel-open");
   document.body.style.overflow = "";
   if (gravityGame) {
@@ -246,13 +257,26 @@ function initStarField() {
   const canvas = document.getElementById("star-field");
   const ctx = canvas.getContext("2d");
   const streaks = [];
-  const stars = Array.from({ length: 200 }, () => ({
+  const stars = Array.from({ length: 340 }, () => ({
     x: Math.random(),
     y: Math.random(),
-    radius: Math.random() * 1.35 + 0.25,
+    radius: Math.random() * 1.75 + 0.18,
     phase: Math.random() * Math.PI * 2,
-    speed: Math.random() * 0.018 + 0.006
+    speed: Math.random() * 0.018 + 0.006,
+    brightness: Math.random() * 0.72 + 0.28
   }));
+  const clusters = Array.from({ length: 5 }, () => {
+    const cx = Math.random();
+    const cy = Math.random() * 0.75;
+    return Array.from({ length: 14 }, () => ({
+      x: Math.min(0.98, Math.max(0.02, cx + (Math.random() - 0.5) * 0.08)),
+      y: Math.min(0.98, Math.max(0.02, cy + (Math.random() - 0.5) * 0.08)),
+      radius: Math.random() * 1.6 + 0.55,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.014 + 0.004,
+      brightness: Math.random() * 0.35 + 0.65
+    }));
+  }).flat();
 
   function resize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -311,9 +335,9 @@ function initStarField() {
 
   function draw(time) {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    stars.forEach((star) => {
+    stars.concat(clusters).forEach((star) => {
       const twinkle = 0.38 + Math.sin(time * star.speed * 0.01 + star.phase) * 0.32;
-      ctx.globalAlpha = Math.max(0.12, twinkle);
+      ctx.globalAlpha = Math.max(0.12, twinkle * star.brightness);
       ctx.fillStyle = "#f0ede8";
       ctx.beginPath();
       ctx.arc(star.x * window.innerWidth, star.y * window.innerHeight, star.radius, 0, Math.PI * 2);

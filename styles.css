@@ -28,10 +28,10 @@ body {
   color: var(--text);
   font-family: var(--sans);
   background:
-    radial-gradient(circle at 18% 24%, rgba(83, 32, 118, 0.34), transparent 34%),
-    radial-gradient(circle at 78% 18%, rgba(25, 75, 140, 0.3), transparent 38%),
-    radial-gradient(circle at 68% 72%, rgba(129, 31, 44, 0.22), transparent 32%),
-    radial-gradient(circle at 42% 48%, rgba(27, 22, 66, 0.42), transparent 44%),
+    radial-gradient(ellipse at 14% 42%, rgba(107, 43, 154, 0.46), transparent 42%),
+    radial-gradient(ellipse at 88% 28%, rgba(19, 111, 134, 0.34), transparent 38%),
+    radial-gradient(ellipse at 50% 100%, rgba(166, 55, 30, 0.24), transparent 34%),
+    radial-gradient(circle at 52% 52%, rgba(55, 61, 115, 0.18), transparent 34%),
     var(--bg);
 }
 
@@ -66,7 +66,22 @@ a:hover {
 }
 
 body.panel-open .site-shell {
-  filter: blur(3px);
+  filter: blur(4px);
+}
+
+body.map-zoom .system {
+  transform: scale(1.08);
+}
+
+body.map-zoom .sun,
+body.map-zoom .orbit:not(.is-selected) {
+  filter: blur(2px);
+  opacity: 0.34;
+}
+
+body.map-zoom .orbit.is-selected {
+  z-index: 9;
+  transform: translate(-50%, -50%) scale(1.34);
 }
 
 .solar-stage {
@@ -123,27 +138,40 @@ body.panel-open .site-shell {
   left: 50%;
   z-index: 4;
   display: grid;
-  width: min(760px, 76vw);
-  min-height: 150px;
+  width: 100px;
+  min-height: 0;
+  aspect-ratio: 1;
   place-items: center;
   border: 0;
-  color: rgba(240, 237, 232, 0.94);
+  border-radius: 50%;
+  color: #2a1406;
   cursor: pointer;
   transform: translate(-50%, -50%);
-  background: transparent;
-  text-shadow:
-    0 0 18px rgba(240, 237, 232, 0.38),
-    0 0 48px rgba(122, 184, 212, 0.28),
-    0 0 92px rgba(139, 111, 181, 0.2);
-  opacity: 0.96;
+  transition: filter 260ms ease, opacity 260ms ease, transform 260ms ease, box-shadow 260ms ease;
+  background:
+    radial-gradient(circle at 35% 24%, #fff8c8 0 14%, #f0c060 34%, #c4522a 65%, #57180b 100%);
+  box-shadow:
+    0 0 36px rgba(240, 192, 96, 0.92),
+    0 0 92px rgba(196, 82, 42, 0.62),
+    0 0 160px rgba(240, 192, 96, 0.24);
 }
 
 .sun span {
   font-family: var(--serif);
-  font-size: clamp(3.5rem, 9vw, 8.5rem);
-  font-style: italic;
-  line-height: 0.9;
+  font-size: 2.55rem;
+  font-style: normal;
+  line-height: 1;
   text-align: center;
+}
+
+.sun:hover,
+.sun:focus-visible {
+  outline: 0;
+  transform: translate(-50%, -50%) scale(1.06);
+  box-shadow:
+    0 0 48px rgba(240, 192, 96, 1),
+    0 0 118px rgba(196, 82, 42, 0.76),
+    0 0 190px rgba(240, 192, 96, 0.34);
 }
 
 .orbits {
@@ -162,6 +190,33 @@ body.panel-open .site-shell {
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
+  transition: filter 260ms ease, opacity 260ms ease, transform 360ms ease;
+}
+
+.orbit::before,
+.orbit::after {
+  position: absolute;
+  inset: -22px;
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 420ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.orbit::before {
+  border: 1px solid color-mix(in srgb, var(--planet-color), transparent 52%);
+  opacity: 0.42;
+  box-shadow:
+    0 0 0 12px rgba(255, 255, 255, 0.025),
+    0 0 0 23px color-mix(in srgb, var(--planet-color), transparent 88%);
+}
+
+.orbit::after {
+  inset: -34px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-left-color: transparent;
+  border-right-color: color-mix(in srgb, var(--planet-color), transparent 58%);
+  opacity: 0.34;
 }
 
 .planet-button {
@@ -185,8 +240,9 @@ body.panel-open .site-shell {
   box-shadow:
     inset -16px -20px 30px rgba(0, 0, 0, 0.42),
     inset 10px 8px 18px rgba(255, 255, 255, 0.12),
-    0 0 24px color-mix(in srgb, var(--planet-color), transparent 26%),
-    0 0 68px color-mix(in srgb, var(--planet-color), transparent 66%);
+    0 0 0 1px color-mix(in srgb, var(--planet-color), transparent 44%),
+    0 0 24px color-mix(in srgb, var(--planet-color), transparent 34%),
+    0 0 68px color-mix(in srgb, var(--planet-color), transparent 72%);
 }
 
 .planet-button::before {
@@ -206,15 +262,16 @@ body.panel-open .site-shell {
 
 .planet-button::after {
   position: absolute;
-  top: calc(100% + 13px);
+  top: calc(100% + 38px);
   left: 50%;
   padding: 0;
   border: 0;
   color: var(--text);
   content: attr(data-map-label);
   font-family: var(--mono);
-  font-size: 0.66rem;
-  opacity: 0.78;
+  font-size: 0.62rem;
+  letter-spacing: 0.28em;
+  opacity: 0.48;
   pointer-events: none;
   text-transform: uppercase;
   transform: translateX(-50%) translateY(0);
@@ -224,13 +281,33 @@ body.panel-open .site-shell {
   text-shadow: 0 0 14px rgba(240, 237, 232, 0.38);
 }
 
+.orbit:has(.planet-button:hover)::before,
+.orbit:has(.planet-button:focus-visible)::before,
+.orbit.is-selected::before {
+  opacity: 0.9;
+  border-color: color-mix(in srgb, var(--planet-color), white 16%);
+  box-shadow:
+    0 0 0 12px rgba(255, 255, 255, 0.045),
+    0 0 0 23px color-mix(in srgb, var(--planet-color), transparent 72%),
+    0 0 28px color-mix(in srgb, var(--planet-color), transparent 44%);
+  transform: rotate(28deg) scale(1.04);
+}
+
+.orbit:has(.planet-button:hover)::after,
+.orbit:has(.planet-button:focus-visible)::after,
+.orbit.is-selected::after {
+  opacity: 0.78;
+  animation: ring-rotate 4s linear infinite;
+}
+
 .planet-button:hover,
 .planet-button:focus-visible {
   box-shadow:
     inset -16px -20px 30px rgba(0, 0, 0, 0.42),
     inset 10px 8px 18px rgba(255, 255, 255, 0.14),
-    0 0 34px color-mix(in srgb, var(--planet-color), transparent 8%),
-    0 0 92px color-mix(in srgb, var(--planet-color), transparent 46%);
+    0 0 0 1px color-mix(in srgb, var(--planet-color), white 14%),
+    0 0 34px color-mix(in srgb, var(--planet-color), transparent 12%),
+    0 0 92px color-mix(in srgb, var(--planet-color), transparent 52%);
   outline: 0;
 }
 
@@ -238,6 +315,12 @@ body.panel-open .site-shell {
 .planet-button:focus-visible::after {
   opacity: 1;
   transform: translateX(-50%) translateY(3px);
+}
+
+@keyframes ring-rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .planet-button[data-planet="about"] {
