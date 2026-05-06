@@ -1,12 +1,12 @@
 const planets = [
-  { id: "about", name: "About", color: "#6b8cae", size: 18, speed: 25, orbit: 24 },
-  { id: "education", name: "Education", color: "#d4a843", size: 24, speed: 35, orbit: 32 },
-  { id: "projects", name: "Projects", color: "#4a9d8f", size: 28, speed: 45, orbit: 40 },
-  { id: "community", name: "Community", color: "#5a8a5a", size: 16, speed: 30, orbit: 48 },
-  { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 22, speed: 55, orbit: 56 },
-  { id: "probability", name: "Probability Game", color: "#c4522a", size: 14, speed: 20, orbit: 64 },
-  { id: "gravity", name: "Gravity Puzzle", color: "#7ab8d4", size: 20, speed: 65, orbit: 72 },
-  { id: "contact", name: "Contact", color: "#e8e8e8", size: 12, speed: 15, orbit: 80 }
+  { id: "about", name: "About", color: "#6b8cae", size: 18, speed: 25, orbit: 24, angle: -28 },
+  { id: "education", name: "Education", color: "#d4a843", size: 24, speed: 35, orbit: 32, angle: 128 },
+  { id: "projects", name: "Projects", color: "#4a9d8f", size: 28, speed: 45, orbit: 40, angle: 22 },
+  { id: "community", name: "Community", color: "#5a8a5a", size: 16, speed: 30, orbit: 48, angle: 214 },
+  { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 22, speed: 55, orbit: 56, angle: 306 },
+  { id: "probability", name: "Probability Game", color: "#c4522a", size: 14, speed: 20, orbit: 64, angle: 166 },
+  { id: "gravity", name: "Gravity Puzzle", color: "#7ab8d4", size: 20, speed: 65, orbit: 72, angle: 72 },
+  { id: "contact", name: "Contact", color: "#e8e8e8", size: 12, speed: 15, orbit: 80, angle: 252 }
 ];
 
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
@@ -173,7 +173,8 @@ function renderNavigation() {
     const orbit = document.createElement("div");
     orbit.className = "orbit";
     orbit.style.setProperty("--orbit-size", `${planet.orbit}%`);
-    orbit.style.setProperty("--orbit-speed", `${planet.speed * 3}s`);
+    orbit.style.setProperty("--planet-angle", `${planet.angle}deg`);
+    orbit.style.setProperty("--planet-counter-angle", `${-planet.angle}deg`);
     orbit.style.setProperty("--planet-color", planet.color);
     orbit.style.setProperty("--planet-size", `${planet.size}px`);
 
@@ -243,6 +244,7 @@ document.addEventListener("keydown", (event) => {
 function initStarField() {
   const canvas = document.getElementById("star-field");
   const ctx = canvas.getContext("2d");
+  const streaks = [];
   const stars = Array.from({ length: 200 }, () => ({
     x: Math.random(),
     y: Math.random(),
@@ -258,6 +260,54 @@ function initStarField() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
+  function spawnShootingStar() {
+    streaks.push({
+      x: Math.random() * window.innerWidth * 0.65 - 80,
+      y: Math.random() * window.innerHeight * 0.28,
+      vx: 9 + Math.random() * 5,
+      vy: 5 + Math.random() * 3,
+      length: 140 + Math.random() * 110,
+      life: 0,
+      maxLife: 55 + Math.random() * 22,
+      width: 1.4,
+      color: "240, 237, 232"
+    });
+  }
+
+  function spawnMeteor() {
+    streaks.push({
+      x: Math.random() * window.innerWidth,
+      y: -30,
+      vx: 3.2 + Math.random() * 2.8,
+      vy: 6 + Math.random() * 3.8,
+      length: 42 + Math.random() * 34,
+      life: 0,
+      maxLife: 70 + Math.random() * 35,
+      width: 2.2,
+      color: "196, 82, 42"
+    });
+  }
+
+  function drawStreak(streak) {
+    const alpha = Math.sin((streak.life / streak.maxLife) * Math.PI);
+    const tailX = streak.x - streak.vx * streak.length * 0.14;
+    const tailY = streak.y - streak.vy * streak.length * 0.14;
+    const gradient = ctx.createLinearGradient(streak.x, streak.y, tailX, tailY);
+    gradient.addColorStop(0, `rgba(${streak.color}, ${alpha * 0.95})`);
+    gradient.addColorStop(1, `rgba(${streak.color}, 0)`);
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = streak.width;
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(streak.x, streak.y);
+    ctx.lineTo(tailX, tailY);
+    ctx.stroke();
+    ctx.fillStyle = `rgba(${streak.color}, ${alpha})`;
+    ctx.beginPath();
+    ctx.arc(streak.x, streak.y, streak.width * 1.35, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
   function draw(time) {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     stars.forEach((star) => {
@@ -268,6 +318,22 @@ function initStarField() {
       ctx.arc(star.x * window.innerWidth, star.y * window.innerHeight, star.radius, 0, Math.PI * 2);
       ctx.fill();
     });
+    ctx.globalAlpha = 1;
+
+    if (Math.random() < 0.004) spawnShootingStar();
+    if (Math.random() < 0.006) spawnMeteor();
+
+    for (let index = streaks.length - 1; index >= 0; index -= 1) {
+      const streak = streaks[index];
+      streak.x += streak.vx;
+      streak.y += streak.vy;
+      streak.life += 1;
+      drawStreak(streak);
+      if (streak.life > streak.maxLife || streak.x > window.innerWidth + 180 || streak.y > window.innerHeight + 180) {
+        streaks.splice(index, 1);
+      }
+    }
+
     ctx.globalAlpha = 1;
     requestAnimationFrame(draw);
   }

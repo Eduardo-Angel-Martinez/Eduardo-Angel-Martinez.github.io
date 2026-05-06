@@ -160,8 +160,7 @@ body.panel-open .site-shell {
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 50%;
   pointer-events: none;
-  transform: translate(-50%, -50%);
-  animation: orbit-spin var(--orbit-speed) linear infinite;
+  transform: translate(-50%, -50%) rotate(var(--planet-angle));
 }
 
 .planet-button {
@@ -176,7 +175,7 @@ body.panel-open .site-shell {
   border-radius: 50%;
   cursor: pointer;
   pointer-events: auto;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) rotate(var(--planet-counter-angle));
   background-color: var(--planet-color);
   background:
     radial-gradient(circle at 32% 28%, rgba(255,255,255,0.75), transparent 22%),
@@ -215,12 +214,6 @@ body.panel-open .site-shell {
 .planet-button:focus-visible::after {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
-}
-
-@keyframes orbit-spin {
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
 }
 
 .mobile-planets {
