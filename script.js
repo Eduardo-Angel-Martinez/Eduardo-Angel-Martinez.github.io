@@ -173,7 +173,7 @@ function renderNavigation() {
     const orbit = document.createElement("div");
     orbit.className = "orbit";
     orbit.style.setProperty("--orbit-size", `${planet.orbit}%`);
-    orbit.style.setProperty("--orbit-speed", `${planet.speed}s`);
+    orbit.style.setProperty("--orbit-speed", `${planet.speed * 3}s`);
     orbit.style.setProperty("--planet-color", planet.color);
     orbit.style.setProperty("--planet-size", `${planet.size}px`);
 
