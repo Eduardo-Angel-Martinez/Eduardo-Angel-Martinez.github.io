@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Interactive solar system portfolio for Eduardo Ángel Martínez Garduño.">
+    <title>Eduardo Ángel Martínez Garduño</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <canvas id="star-field" aria-hidden="true"></canvas>
+    <main class="site-shell" id="site-shell">
+      <section class="solar-stage" aria-label="Interactive solar system portfolio">
+        <div class="solar-copy" aria-hidden="true">
+          <p>Orbiting portfolio</p>
+          <h1>Eduardo Ángel Martínez Garduño</h1>
+        </div>
+        <div class="system" id="system">
+          <button class="sun" type="button" data-planet="about" aria-label="Open About">
+            <span>EM</span>
+          </button>
+          <div class="orbits" id="orbits" aria-label="Portfolio planets"></div>
+        </div>
+      </section>
+
+      <section class="mobile-planets" aria-label="Portfolio sections">
+        <div class="mobile-heading">
+          <p>Solar portfolio</p>
+          <h1>Eduardo Ángel Martínez Garduño</h1>
+        </div>
+        <div class="mobile-grid" id="mobile-grid"></div>
+      </section>
+    </main>
+
+    <aside class="planet-panel" id="planet-panel" aria-modal="true" aria-hidden="true" role="dialog">
+      <button class="close-panel" type="button" id="close-panel" aria-label="Close panel">×</button>
+      <div class="panel-orb" id="panel-orb" aria-hidden="true"></div>
+      <div class="panel-content" id="panel-content"></div>
+    </aside>
+
+    <script src="script.js"></script>
+  </body>
+</html>
