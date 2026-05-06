@@ -1,12 +1,12 @@
 const planets = [
-  { id: "about", name: "About", color: "#6b8cae", size: 65, speed: 25, x: 21, y: 28 },
-  { id: "education", name: "Education", color: "#d4a843", size: 75, speed: 35, x: 61, y: 20 },
-  { id: "projects", name: "Projects", color: "#4a9d8f", size: 70, speed: 45, x: 83, y: 47 },
-  { id: "community", name: "Community", color: "#5a8a5a", size: 60, speed: 30, x: 34, y: 73 },
-  { id: "beyond", name: "Beyond", color: "#8b6fb5", size: 65, speed: 55, x: 75, y: 78 },
-  { id: "probability", name: "Probability Game", color: "#c4522a", size: 55, speed: 20, x: 14, y: 61 },
-  { id: "gravity", name: "Gravity Puzzle", color: "#7ab8d4", size: 60, speed: 65, x: 45, y: 15 },
-  { id: "contact", name: "Contact", color: "#e8e8e8", size: 50, speed: 15, x: 54, y: 88 }
+  { id: "about", name: "About", mapLabel: "E D U A R D O", color: "#b9824b", size: 65, speed: 25, x: 16, y: 19 },
+  { id: "education", name: "Education", color: "#a9823b", size: 75, speed: 35, x: 61, y: 20 },
+  { id: "projects", name: "Projects", color: "#357f76", size: 70, speed: 45, x: 84, y: 47 },
+  { id: "community", name: "Community", color: "#496f49", size: 60, speed: 30, x: 34, y: 73 },
+  { id: "beyond", name: "Beyond", color: "#69518e", size: 65, speed: 55, x: 75, y: 78 },
+  { id: "probability", name: "Probability Game", color: "#9a4125", size: 55, speed: 20, x: 14, y: 61 },
+  { id: "gravity", name: "Gravity Puzzle", color: "#5e98af", size: 60, speed: 65, x: 45, y: 15 },
+  { id: "contact", name: "Contact", color: "#b9b9b5", size: 50, speed: 15, x: 54, y: 88 }
 ];
 
 const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
@@ -184,7 +184,7 @@ function renderNavigation() {
     button.type = "button";
     button.dataset.planet = planet.id;
     button.dataset.label = planet.name;
-    button.dataset.mapLabel = planet.name;
+    button.dataset.mapLabel = planet.mapLabel || planet.name.toUpperCase().split("").join(" ");
     button.setAttribute("aria-label", `Open ${planet.name}`);
     button.addEventListener("click", () => openPlanet(planet.id));
     orbit.appendChild(button);
@@ -200,7 +200,8 @@ function renderNavigation() {
     mobileGridEl.appendChild(card);
   });
 
-  document.querySelector(".sun").addEventListener("click", () => openPlanet("about"));
+  const centerNode = document.querySelector(".sun");
+  if (centerNode) centerNode.addEventListener("click", () => openPlanet("about"));
 }
 
 function openPlanet(id) {
