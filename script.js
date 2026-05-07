@@ -58,7 +58,7 @@ const contentRenderers = {
     <section class="panel-section">
       <p class="eyebrow">Projects</p>
       <h2 class="section-title">Applied math in motion</h2>
-      <div class="project-grid">
+      <div class="project-grid featured-projects">
         ${projectCard("Actuarial Python Library", "Python library implementing core actuarial calculations: interest theory, life tables, annuity valuations.", ["Python", "Actuarial Science", "Open Source"], "https://github.com/Eduardo-Angel-Martinez/Libreria-Calculo-Actuarial-1")}
         ${projectCard("World Cup 2026 & Subjective Wellbeing", "Causal inference study on how Mexico's World Cup results affect emotional wellbeing and economic confidence in CDMX. Difference-in-differences design.", ["Causal Inference", "R", "DiD", "Public Policy"], "#")}
         ${projectCard("Food Labeling Policy NOM-051", "Effect of Mexico's octagon warning labels on ultra-processed food consumption using ENIGH 2018 vs 2022. Heterogeneous effects by urban/rural, income, and education level.", ["DiD", "R", "Public Policy", "ENIGH"], "#")}
@@ -100,7 +100,6 @@ const contentRenderers = {
         <ul class="interest-list">
           <li>Live concerts and music events</li>
           <li>Hiking and being outdoors</li>
-          <li>Playing violin, guitar and bass</li>
           <li>Ping pong</li>
           <li>Traveling</li>
         </ul>

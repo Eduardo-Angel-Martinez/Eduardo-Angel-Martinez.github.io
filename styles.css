@@ -1021,8 +1021,7 @@ body.map-zoom .orbit.is-selected .planet-group {
 }
 
 .about-layout {
-  grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.8fr);
-  align-items: stretch;
+  grid-template-columns: 1fr;
 }
 
 .about-copy {
@@ -1037,6 +1036,10 @@ body.map-zoom .orbit.is-selected .planet-group {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+.featured-projects {
+  grid-template-columns: 1fr;
 }
 
 .stat,
@@ -1138,9 +1141,27 @@ body.map-zoom .orbit.is-selected .planet-group {
 
 .project-card {
   display: grid;
-  gap: 12px;
-  min-height: 250px;
+  gap: 18px;
+  min-height: 320px;
+  padding: clamp(22px, 4vw, 34px);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.project-card h3 {
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+}
+
+.project-card a {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(240,192,96,0.36);
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: var(--mono);
+  background: rgba(240,192,96,0.08);
 }
 
 .void-game-card {
@@ -1195,8 +1216,18 @@ body.map-zoom .orbit.is-selected .planet-group {
   border-radius: 8px;
 }
 
+.about-layout .photo-frame img,
+.beyond-life .photo-frame img {
+  object-fit: contain;
+}
+
+.about-layout .photo-frame {
+  width: 100%;
+  min-height: 520px;
+}
+
 .vertical-photo {
-  min-height: 430px;
+  min-height: 560px;
 }
 
 .horizontal-photo {
