@@ -22,21 +22,25 @@ const panelTargets = {
   pong: { id: "pong", color: "#7ab8d4" }
 };
 
-const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. Outside academia I teach, play music, and try to stay curious.";
+const aboutText = "I'm Eduardo, a student at ITAM pursuing two degrees simultaneously — Actuarial Science and Data Science. I'm drawn to problems that sit at the intersection of math, data, and the real world. I find patterns everywhere — in data, in music, in the way people learn. Outside academia I teach, play music, and try to stay curious.";
 
 const contentRenderers = {
   about: () => `
-    <section class="panel-section">
-      <p class="eyebrow">About</p>
-      <h2 class="panel-title">Eduardo Ángel Martínez</h2>
-      <p class="subtitle">Actuary · Data Scientist · Musician</p>
-      <p class="lead">${aboutText}</p>
-      <div class="stats-grid">
-        ${stat("02", "degrees in progress")}
-        ${stat("3+", "years tutoring math & economics")}
-        ${stat("3", "instruments: violin · guitar · bass")}
-        ${stat("2×", "top GPA recognition")}
+    <section class="panel-section about-layout">
+      <div class="about-copy">
+        <p class="eyebrow">About</p>
+        <h2 class="panel-title">Eduardo Ángel Martínez Garduño</h2>
+        <p class="mono-line">22 years old · Born in Mexico City</p>
+        <p class="subtitle">Actuary · Data Scientist · Musician</p>
+        <p class="lead">${aboutText}</p>
+        <div class="stats-grid">
+          ${stat("02", "degrees in progress")}
+          ${stat("3+", "years tutoring math & economics")}
+          ${stat("3", "instruments: violin · guitar · bass")}
+          ${stat("2×", "top GPA recognition (Spring & Fall 2025)")}
+        </div>
       </div>
+      ${panelPhoto("images/about-photo.jpg", "Eduardo Ángel Martínez", "vertical-photo")}
     </section>
   `,
   education: () => `
@@ -65,7 +69,7 @@ const contentRenderers = {
     <section class="panel-section">
       <p class="eyebrow">Community</p>
       <h2 class="section-title">Teaching as gravity</h2>
-      <p class="lead">Teaching keeps Eduardo close to the human side of mathematics. Giving back matters because confidence, patience, and curiosity can change how a student sees their own future.</p>
+      <p class="lead">I believe that real change starts with people, not just numbers. Enlace Rural taught me things no equation could — patience, empathy, and the quiet power of showing up consistently for someone who needs it. Working with students in underserved communities reminded me why I study what I study: not just to solve abstract problems, but to make something better for the people around me. It made me grow in ways my degrees never could.</p>
       <div class="two-column">
         <article class="glass-card">
           <p class="meta">Education Volunteer · Aug 2024–present</p>
@@ -77,27 +81,39 @@ const contentRenderers = {
             <span class="chip">+15% engagement</span>
           </div>
         </article>
-        <div class="photo-placeholder">[ photo from Enlace Rural ]</div>
+        ${panelPhoto("images/community-photo.jpg", "Enlace Rural")}
       </div>
     </section>
   `,
   beyond: () => `
     <section class="panel-section">
       <p class="eyebrow">Beyond the Classroom</p>
-      <h2 class="section-title">Patterns after hours</h2>
-      <div class="two-column">
-        <article class="glass-card">
-          <h3>Music</h3>
-          <p>Eduardo plays violin, guitar, and bass. He finds patterns in music the same way he finds them in data.</p>
-          <div class="chips"><span class="chip">Violin</span><span class="chip">Guitar</span><span class="chip">Bass</span></div>
-        </article>
-        <div class="photo-placeholder">[ photo with instrument ]</div>
+      <div class="two-column beyond-life">
         <article class="glass-card">
           <h3>Life</h3>
-          <p>Outside academia, Eduardo makes time for friends, long conversations, and small rituals that keep life grounded. He believes good work is easier to sustain when there is room for joy around it.</p>
+          <p>Beyond the equations and the code, I'm someone who values the people around him deeply. My family has always been my foundation — the reason I push myself and the place I always come back to. My friends make the journey worthwhile, whether we're exploring the city, going to concerts, or just spending time together.</p>
         </article>
-        <div class="photo-placeholder">[ photo with friends ]</div>
+        ${panelPhoto("images/beyond-life-photo.jpg", "Life", "vertical-photo")}
       </div>
+      <article class="glass-card interests-card">
+        <h3>What I'm into</h3>
+        <ul class="interest-list">
+          <li>Live concerts and music events</li>
+          <li>Hiking and being outdoors</li>
+          <li>Playing violin, guitar and bass</li>
+          <li>Ping pong</li>
+          <li>Traveling</li>
+        </ul>
+      </article>
+      <div class="two-column beyond-photos">
+        ${panelPhoto("images/beyond-horizontal.jpg", "Beyond", "horizontal-photo")}
+        ${panelPhoto("images/beyond-vertical.jpg", "Beyond", "horizontal-photo")}
+      </div>
+      <article class="glass-card">
+        <h3>Music</h3>
+        <p>Eduardo plays violin, guitar, and bass. He finds patterns in music the same way he finds them in data.</p>
+        <div class="chips"><span class="chip">Violin</span><span class="chip">Guitar</span><span class="chip">Bass</span></div>
+      </article>
     </section>
   `,
   contact: () => `
@@ -191,6 +207,12 @@ const contentRenderers = {
 
 function stat(value, label) {
   return `<div class="stat"><span class="stat-value">${value}</span><span class="stat-label">${label}</span></div>`;
+}
+
+function panelPhoto(src, alt, className = "") {
+  return `<div class="photo-frame ${className}" data-placeholder="${alt}">
+    <img src="${src}" alt="${alt}" onerror="this.parentElement.classList.add('is-missing'); this.remove();">
+  </div>`;
 }
 
 function chips(items) {
